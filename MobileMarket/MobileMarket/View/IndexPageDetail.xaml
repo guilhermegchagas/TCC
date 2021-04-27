@@ -1,0 +1,24 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d"
+             x:Class="MobileMarket.View.IndexPageDetail"
+             Title="Home">
+    <StackLayout Padding="10" Spacing="30" Margin="0,20,0,0">
+        <Label Text="" x:Name="lbl_bemvindo" FontSize="Large" HorizontalOptions="Center"/>
+        <AbsoluteLayout HeightRequest="65" x:Name="abs_iniciarColeta">
+            <Button Text="Iniciar Coleta" AbsoluteLayout.LayoutBounds="0,0.45,1,0.75" AbsoluteLayout.LayoutFlags="All" Margin="10,0,10,0" Pressed="GoToIniciarColeta"/>
+            <Button Image="iniciar_coleta_icon.png" x:Name="img_iniciarColeta" AbsoluteLayout.LayoutBounds="0,0,65,65" AbsoluteLayout.LayoutFlags="PositionProportional" BorderRadius="33" BorderColor="Black" BorderWidth="1" BackgroundColor="White" Pressed="GoToIniciarColeta"/>
+        </AbsoluteLayout>
+        <AbsoluteLayout HeightRequest="65" x:Name="abs_resgatarCupons">
+            <Button Text="Resgatar Cupons" AbsoluteLayout.LayoutBounds="0,0.45,1,0.75" AbsoluteLayout.LayoutFlags="All" Margin="10,0,10,0" Pressed="GoToResgatarCupons"/>
+            <Button Image="cupom_icon.png" x:Name="img_resgatarCupons" AbsoluteLayout.LayoutBounds="1,0,65,65" AbsoluteLayout.LayoutFlags="PositionProportional" BorderRadius="33" BorderColor="Black" BorderWidth="1" BackgroundColor="White" Pressed="GoToResgatarCupons"/>
+        </AbsoluteLayout>
+        <AbsoluteLayout HeightRequest="65" x:Name="abs_meusCupons">
+            <Button Text="Meus Cupons" AbsoluteLayout.LayoutBounds="0,0.45,1,0.75" AbsoluteLayout.LayoutFlags="All" Margin="10,0,10,0" Pressed="GoToMeusCupons"/>
+            <Button Image="meus_cupons_icon.png" x:Name="img_meusCupons" AbsoluteLayout.LayoutBounds="0,0,65,65" AbsoluteLayout.LayoutFlags="PositionProportional" BorderRadius="33" BorderColor="Black" BorderWidth="1" BackgroundColor="White" Pressed="GoToMeusCupons"/>
+        </AbsoluteLayout>
+    </StackLayout>
+</ContentPage>

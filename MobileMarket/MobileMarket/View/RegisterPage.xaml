@@ -1,0 +1,56 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:behaviorPack="clr-namespace:Xamarin.Forms.BehaviorValidationPack;assembly=Xamarin.Forms.BehaviorValidationPack"
+             mc:Ignorable="d"
+             x:Class="MobileMarket.View.RegisterPage"
+             Title="Registro">
+    <ContentPage.Content>
+        <Grid RowSpacing="0" ColumnSpacing="0" Margin="0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="5*" />
+                <ColumnDefinition Width="5*" />
+                <ColumnDefinition Width="80*" />
+                <ColumnDefinition Width="5*" />
+                <ColumnDefinition Width="5*" />
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="8*" />
+                <RowDefinition Height="8*" />
+                <RowDefinition Height="4*" />
+                <RowDefinition Height="8*" />
+                <RowDefinition Height="4*" />
+                <RowDefinition Height="8*" />
+                <RowDefinition Height="4*" />
+                <RowDefinition Height="8*" />
+                <RowDefinition Height="4*" />
+                <RowDefinition Height="8*" />
+                <RowDefinition Height="4*" />
+                <RowDefinition Height="8*" />
+                <RowDefinition Height="7*" />
+                <RowDefinition Height="10*" />
+                <RowDefinition Height="7*" />
+            </Grid.RowDefinitions>
+            <Label Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="3" Margin="10,0,10,0" Text="CPF" VerticalTextAlignment="End" HorizontalTextAlignment="Start"/>
+            <Entry Grid.Row="1" x:Name="entry_cpf" Grid.Column="1" Grid.ColumnSpan="3" Margin="10,0,10,0" Keyboard="Numeric">
+                <Entry.Behaviors>
+                    <behaviorPack:CPFValidationBehavior />
+                    <behaviorPack:MaskedBehavior Mask="XXX.XXX.XXX-XX" />
+                </Entry.Behaviors>
+            </Entry>
+            <Label Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="3" Margin="10,0,10,0" Text="Nome" VerticalTextAlignment="End" HorizontalTextAlignment="Start"/>
+            <Entry Grid.Row="3" x:Name="entry_nome"  Grid.Column="1" Grid.ColumnSpan="3" Margin="10,0,10,0"/>
+            <Label Grid.Row="4" Grid.Column="1" Grid.ColumnSpan="3" Margin="10,0,10,0" Text="Sobrenome" VerticalTextAlignment="End" HorizontalTextAlignment="Start"/>
+            <Entry Grid.Row="5" x:Name="entry_sobrenome" Grid.Column="1" Grid.ColumnSpan="3" Margin="10,0,10,0"/>
+            <Label Grid.Row="6" Grid.Column="1" Grid.ColumnSpan="3" Margin="10,0,10,0" Text="Email" VerticalTextAlignment="End" HorizontalTextAlignment="Start"/>
+            <Entry Grid.Row="7" x:Name="entry_email"  Grid.Column="1" Grid.ColumnSpan="3" Margin="10,0,10,0" Keyboard="Email"/>
+            <Label Grid.Row="8" Grid.Column="1" Grid.ColumnSpan="3" Margin="10,0,10,0" Text="Senha" VerticalTextAlignment="End" HorizontalTextAlignment="Start"/>
+            <Entry Grid.Row="9" IsPassword="true" x:Name="entry_senha" Grid.Column="1" Grid.ColumnSpan="3" Margin="10,0,10,0"/>
+            <Label Grid.Row="10" Grid.Column="1" Grid.ColumnSpan="3" Margin="10,0,10,0" Text="Confirmar Senha" VerticalTextAlignment="End" HorizontalTextAlignment="Start"/>
+            <Entry Grid.Row="11" IsPassword="true" x:Name="entry_confirmar_senha" Grid.Column="1" Grid.ColumnSpan="3" Margin="10,0,10,0"/>
+            <Button Grid.Row="13" Text="Finalizar Registro"  Grid.Column="2" Margin="30,0,30,0" Clicked="FinishRegisterButtonClicked"/>
+        </Grid>
+    </ContentPage.Content>
+</ContentPage>

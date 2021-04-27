@@ -1,0 +1,42 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:view="clr-namespace:MobileMarket.View"
+             mc:Ignorable="d"
+             x:Class="MobileMarket.View.IndexPageMaster"
+             Title="Master">
+  <StackLayout>
+    <ListView x:Name="MenuItemsListView"
+              SeparatorVisibility="None"
+              HasUnevenRows="true"
+              ItemSelected="ChangePage">
+      <ListView.ItemsSource>
+          <x:Array Type="{x:Type view:ListViewItem}">
+              <view:ListViewItem Title="Home"/> 
+              <view:ListViewItem Title="Iniciar Coleta"/> 
+              <view:ListViewItem Title="Resgatar Cupons"/>
+              <view:ListViewItem Title="Meus Cupons"/>
+          </x:Array>
+      </ListView.ItemsSource>
+      <ListView.Header>
+        <StackLayout BackgroundColor="Green">
+            <Label Text="" FontSize="24" Margin="10,5,10,5"/>
+        </StackLayout>
+      </ListView.Header>
+      <ListView.ItemTemplate>
+        <DataTemplate>
+           <ViewCell>
+            <StackLayout Padding="15,10" HorizontalOptions="FillAndExpand">
+              <Label VerticalOptions="FillAndExpand" 
+                    VerticalTextAlignment="Center" 
+                    Text="{Binding Title}"
+                    FontSize="24"/>
+            </StackLayout>
+          </ViewCell>
+        </DataTemplate>
+      </ListView.ItemTemplate>
+    </ListView>
+  </StackLayout>
+</ContentPage>

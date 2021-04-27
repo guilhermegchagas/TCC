@@ -1,0 +1,52 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:behaviorPack="clr-namespace:Xamarin.Forms.BehaviorValidationPack;assembly=Xamarin.Forms.BehaviorValidationPack"
+             mc:Ignorable="d"
+             x:Class="MobileMarket.View.LoginPage"
+             Title="Login">
+    <ContentPage.Content>
+        <Grid RowSpacing="0" ColumnSpacing="0" Margin="0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="5*" />
+                <ColumnDefinition Width="5*" />
+                <ColumnDefinition Width="80*" />
+                <ColumnDefinition Width="5*" />
+                <ColumnDefinition Width="5*" />
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="20*" />
+                <!-- Espaço -->
+                <RowDefinition Height="10*" />
+                <!-- Entry 1 -->
+                <RowDefinition Height="10*" />
+                <!-- Espaço -->
+                <RowDefinition Height="10*" />
+                <!-- Entry 2 -->
+                <RowDefinition Height="10*" />
+                <!-- Espaço -->
+                <RowDefinition Height="10*" />
+                <!-- Botão -->
+                <RowDefinition Height="5*" />
+                <!-- Espaço -->
+                <RowDefinition Height="10*" />
+                <!-- Botão -->
+                <RowDefinition Height="15*" />
+                <!-- Espaço -->
+            </Grid.RowDefinitions>
+            <Label Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="3" Margin="10,0,10,0" Text="CPF" VerticalTextAlignment="End" HorizontalTextAlignment="Start"/>
+            <Entry x:Name="entry_cpf" Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="3" Margin="10,0,10,0"  Keyboard="Numeric">
+                <Entry.Behaviors>
+                    <behaviorPack:CPFValidationBehavior />
+                    <behaviorPack:MaskedBehavior Mask="XXX.XXX.XXX-XX" />
+                </Entry.Behaviors>
+            </Entry>
+            <Label Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="3" Margin="10,0,10,0" Text="Senha" VerticalTextAlignment="End" HorizontalTextAlignment="Start"/>
+            <Entry IsPassword="true" x:Name="entry_senha" Grid.Row="3" Grid.Column="1" Grid.ColumnSpan="3" Margin="10,0,10,0"/>
+            <Button Text="Entrar" Grid.Row="5" Grid.Column="2" Margin="30,0,30,0" Clicked="LoginButtonClicked"/>
+            <Button Text="Registrar-se" Grid.Row="7" Grid.Column="2" Margin="30,0,30,0" Clicked="RegisterButtonClicked"/>
+        </Grid>
+    </ContentPage.Content>
+</ContentPage>

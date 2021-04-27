@@ -1,0 +1,52 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d"
+             x:Class="MobileMarket.View.CarrinhoPage"
+             Title="Itens Coletados">
+    <ContentPage.Content>
+        <Grid RowSpacing="0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="100*"/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="78.7*"/>
+                <RowDefinition Height="0.3*"/>
+                <RowDefinition Height="7*"/>
+                <RowDefinition Height="2*"/>
+                <RowDefinition Height="10*"/>
+                <RowDefinition Height="2*"/>
+            </Grid.RowDefinitions>
+            <ScrollView Grid.Row="0" BackgroundColor="White">
+                <ListView x:Name="ListCarrinhoReciclagem">
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+                            <ViewCell>
+                                <Grid Padding="10">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="70*"/>
+                                        <ColumnDefinition Width="30*"/>
+                                    </Grid.ColumnDefinitions>
+                                    <StackLayout Grid.Column="0" Orientation="Horizontal" Spacing="0">
+                                        <Label Text="{Binding nome_produto}" Margin="0,0,10,0" FontSize="Medium"/>
+                                        <Label Text="x" Margin="0" FontSize="Medium"/>
+                                        <Label Text="{Binding quantidade}" Margin="0" FontSize="Medium"/>
+                                    </StackLayout>
+                                    <Label Grid.Column="1" Text="{Binding total}" FontSize="Medium"/>
+                                </Grid>
+                            </ViewCell>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
+            </ScrollView>
+            <BoxView Grid.Row="1" Color="Black"/>
+            <StackLayout Orientation="Horizontal" Grid.Row="2">
+                <Label Margin="10,5,0,0" Text="Total: " FontSize="Large" FontAttributes="Bold"/>
+                <Label Margin="0,5,0,0" Text="0" FontSize="Large" FontAttributes="Bold" x:Name="lbl_total"/>
+            </StackLayout>
+            <Button Grid.Row="4" Text="Finalizar" Clicked="FinalizarColeta" FontSize="Large" FontAttributes="Bold" Margin="25,0,25,0" BorderColor="Black" BorderWidth="1"/>
+        </Grid>
+    </ContentPage.Content>
+</ContentPage>

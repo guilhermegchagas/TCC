@@ -1,0 +1,46 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:customcontrols="clr-namespace:Xamarin.CustomControls;assembly=Xamarin.CustomControls.AccordionView"
+             mc:Ignorable="d"
+             x:Class="MobileMarket.View.MyCuponsPage"
+             Title="Meus Cupons">
+    <ContentPage.Content>
+        <ScrollView x:Name="scrollView">
+            <CollectionView x:Name="listaMeusCupons" Margin="5">
+                <CollectionView.ItemTemplate>
+                    <DataTemplate>
+                        <ContentView Padding="5">
+                            <!-- AbsoluteLayout.LayoutBounds=".5,0,100,25" AbsoluteLayout.LayoutFlags="PositionProportional" -->
+                            <Frame HasShadow="True" BorderColor="Black" CornerRadius="10" HorizontalOptions="Fill" BackgroundColor="{Binding CorHex}" Padding="4">
+                                <StackLayout Spacing="0">
+                                    <StackLayout.GestureRecognizers>
+                                        <TapGestureRecognizer Tapped="ArrowTapped" NumberOfTapsRequired="1"/>
+                                    </StackLayout.GestureRecognizers>
+                                    <AbsoluteLayout WidthRequest="1" HeightRequest="1">
+                                        <Image Source="cupom_icon.png" AbsoluteLayout.LayoutBounds="-0.05,0.2,40,40" AbsoluteLayout.LayoutFlags="PositionProportional" Rotation="-90"/>
+                                        <Image Source="cupom_icon.png" AbsoluteLayout.LayoutBounds="-0.015,0.25,40,40" AbsoluteLayout.LayoutFlags="PositionProportional" Rotation="-75"/>
+                                    </AbsoluteLayout>
+                                    <Label Text="{Binding Nome}" FontAttributes="Bold" FontSize="Large" HorizontalOptions="Center"/>
+                                    <StackLayout Orientation="Horizontal"  HorizontalOptions="Center">
+                                        <Label Text="{Binding Codigo}" FontSize="Large"/>
+                                        <Image Source="arrowdown.png" HeightRequest="20" WidthRequest="20" />
+                                    </StackLayout>
+                                    <StackLayout IsVisible="False">
+                                        <Label Text="{Binding Descricao}" FontAttributes="Italic" HorizontalOptions="Center" MaxLines="10" LineBreakMode="TailTruncation"/>
+                                        <StackLayout Orientation="Horizontal" HorizontalOptions="Center">
+                                            <Label Text="Vencimento: "/>
+                                            <Label Text="{Binding Vencimento}"/>
+                                        </StackLayout>
+                                    </StackLayout>
+                                </StackLayout>
+                            </Frame>
+                        </ContentView>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+        </ScrollView>
+    </ContentPage.Content>
+</ContentPage>
