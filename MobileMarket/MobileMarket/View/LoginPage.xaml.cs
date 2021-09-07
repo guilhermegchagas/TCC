@@ -26,17 +26,19 @@ namespace MobileMarket.View
 
         private void LoginButtonClicked(object sender, EventArgs e)
         {
-            string cpf = entry_cpf.Text.Trim().Replace(".", "").Replace("-", "");
+            if (!AssertNoEmptyEntry())
+                return;
+
+            string email = entry_email.Text.Trim();
             string senha = entry_senha.Text.Trim();
 
-            LoginTokenResult accessToken = HTTPRequest.GetLoginToken(cpf, senha);
+            LoginTokenResult accessToken = HTTPRequest.GetLoginToken(email, senha);
             if (accessToken != null)
             {
                 if(accessToken.Error == null)
                 {
-                    ClienteInfo.CPF = cpf;
+                    ClienteInfo.Email = email;
                     ClienteInfo.Token = accessToken.AccessToken;
-                    ClienteInfo.ShortToken = ClienteInfo.Token.Substring(0, 25);
                     if(HTTPRequest.UpdateClientInfo())
                     {
                         App.Current.MainPage = new IndexPage();
@@ -61,6 +63,21 @@ namespace MobileMarket.View
         private void RegisterButtonClicked(object sender, EventArgs e)
         {
             Navigation.PushAsync(new RegisterPage());
+        }
+
+        private bool AssertNoEmptyEntry()
+        {
+            if (Helper.AssertEmptyEntry(entry_email))
+            {
+                DisplayAlert("Campo Vazio", "Preencha o campo de email.", "OK");
+                return false;
+            }
+            if (Helper.AssertEmptyEntry(entry_senha))
+            {
+                DisplayAlert("Campo Vazio", "Preencha o campo de senha.", "OK");
+                return false;
+            }
+            return true;
         }
     }
 }

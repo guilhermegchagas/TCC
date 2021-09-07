@@ -14,8 +14,7 @@ namespace MobileMarket
         {
             InitializeComponent();
 
-            //MainPage = new NavigationPage(new LoginPage());
-            MainPage = new ChartPage();
+            MainPage = new NavigationPage(new LoginPage());
         }
 
         protected override void OnStart()

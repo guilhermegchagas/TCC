@@ -22,17 +22,17 @@ namespace MobileMarket.View
 
         private void GoToIniciarColeta(object sender, EventArgs e)
         {
-            Navigation.PushAsync(new QRConnectPage());
+            //Navigation.PushAsync(new QRConnectPage());
         }
 
         private void GoToResgatarCupons(object sender, EventArgs e)
         {
-            Navigation.PushAsync(new AvailableCuponsPage());
+            Navigation.PushAsync(new ChartPage());
         }
 
         private void GoToMeusCupons(object sender, EventArgs e)
         {
-            Navigation.PushAsync(new MyCuponsPage());
+            Navigation.PushAsync(new PontosPage());
         }
     }
 }

@@ -5,8 +5,8 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:behaviorPack="clr-namespace:Xamarin.Forms.BehaviorValidationPack;assembly=Xamarin.Forms.BehaviorValidationPack"
              mc:Ignorable="d"
-             x:Class="MobileMarket.View.RegisterPage"
-             Title="Registro">
+             x:Class="MobileMarket.View.CriarPontoPage"
+             Title="Criar Ponto">
     <ContentPage.Content>
         <Grid RowSpacing="0" ColumnSpacing="0" Margin="0">
             <Grid.ColumnDefinitions>
@@ -20,24 +20,18 @@
                 <RowDefinition Height="4*" />
                 <RowDefinition Height="8*" />
                 <RowDefinition Height="4*" />
-                <RowDefinition Height="8*" />
-                <RowDefinition Height="4*" />
-                <RowDefinition Height="8*" />
-                <RowDefinition Height="4*" />
-                <RowDefinition Height="8*" />
+                <RowDefinition Height="32*" />
                 <RowDefinition Height="7*" />
                 <RowDefinition Height="10*" />
                 <RowDefinition Height="7*" />
             </Grid.RowDefinitions>
             <Label Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="3" Margin="10,0,10,0" Text="Nome" VerticalTextAlignment="End" HorizontalTextAlignment="Start"/>
             <Entry Grid.Row="1" x:Name="entry_nome"  Grid.Column="1" Grid.ColumnSpan="3" Margin="10,0,10,0"/>
-            <Label Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="3" Margin="10,0,10,0" Text="Email" VerticalTextAlignment="End" HorizontalTextAlignment="Start"/>
-            <Entry Grid.Row="3" x:Name="entry_email"  Grid.Column="1" Grid.ColumnSpan="3" Margin="10,0,10,0" Keyboard="Email"/>
-            <Label Grid.Row="4" Grid.Column="1" Grid.ColumnSpan="3" Margin="10,0,10,0" Text="Senha" VerticalTextAlignment="End" HorizontalTextAlignment="Start"/>
-            <Entry Grid.Row="5" IsPassword="true" x:Name="entry_senha" Grid.Column="1" Grid.ColumnSpan="3" Margin="10,0,10,0"/>
-            <Label Grid.Row="6" Grid.Column="1" Grid.ColumnSpan="3" Margin="10,0,10,0" Text="Confirmar Senha" VerticalTextAlignment="End" HorizontalTextAlignment="Start"/>
-            <Entry Grid.Row="7" IsPassword="true" x:Name="entry_confirmar_senha" Grid.Column="1" Grid.ColumnSpan="3" Margin="10,0,10,0"/>
-            <Button Grid.Row="9" Text="Finalizar Registro"  Grid.Column="2" Margin="30,0,30,0" Clicked="FinishRegisterButtonClicked"/>
+            <Label Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="3" Margin="10,0,10,0" Text="Descrição" VerticalTextAlignment="End" HorizontalTextAlignment="Start"/>
+            <Frame Grid.Row="3" Grid.Column="1" Grid.ColumnSpan="3" BorderColor="LightGray" HasShadow="False" Padding="0" Margin="10,0,10,0">
+                <Editor x:Name="editor_descricao"/>
+            </Frame>
+            <Button Grid.Row="5" Text="Cadastrar Ponto"  Grid.Column="2" Margin="30,0,30,0" Clicked="FinishRegisterButtonClicked"/>
         </Grid>
     </ContentPage.Content>
 </ContentPage>

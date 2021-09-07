@@ -36,15 +36,10 @@
                 <RowDefinition Height="15*" />
                 <!-- Espaço -->
             </Grid.RowDefinitions>
-            <Label Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="3" Margin="10,0,10,0" Text="CPF" VerticalTextAlignment="End" HorizontalTextAlignment="Start"/>
-            <Entry x:Name="entry_cpf" Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="3" Margin="10,0,10,0"  Keyboard="Numeric">
-                <Entry.Behaviors>
-                    <behaviorPack:CPFValidationBehavior />
-                    <behaviorPack:MaskedBehavior Mask="XXX.XXX.XXX-XX" />
-                </Entry.Behaviors>
-            </Entry>
+            <Label Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="3" Margin="10,0,10,0" Text="Email" VerticalTextAlignment="End" HorizontalTextAlignment="Start"/>
+            <Entry x:Name="entry_email" Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="3" Margin="10,0,10,0" Text="guilherme@gmail.com"/>
             <Label Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="3" Margin="10,0,10,0" Text="Senha" VerticalTextAlignment="End" HorizontalTextAlignment="Start"/>
-            <Entry IsPassword="true" x:Name="entry_senha" Grid.Row="3" Grid.Column="1" Grid.ColumnSpan="3" Margin="10,0,10,0"/>
+            <Entry IsPassword="true" x:Name="entry_senha" Grid.Row="3" Grid.Column="1" Grid.ColumnSpan="3" Margin="10,0,10,0" Text="123"/>
             <Button Text="Entrar" Grid.Row="5" Grid.Column="2" Margin="30,0,30,0" Clicked="LoginButtonClicked"/>
             <Button Text="Registrar-se" Grid.Row="7" Grid.Column="2" Margin="30,0,30,0" Clicked="RegisterButtonClicked"/>
         </Grid>

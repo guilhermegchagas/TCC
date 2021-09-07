@@ -34,12 +34,9 @@ namespace MobileMarket.View
 
         private void FillClienteInfo()
         {
-            ClienteInfo.CPF = entry_cpf.Text.Trim().Replace(".", "").Replace("-", "");
             ClienteInfo.Nome = entry_nome.Text.Trim();
-            ClienteInfo.Sobrenome = entry_sobrenome.Text.Trim();
             ClienteInfo.Email = entry_email.Text.Trim();
             ClienteInfo.Senha = entry_senha.Text.Trim();
-            ClienteInfo.Creditos = 0;
         }
 
         private bool IsAllFieldsOK()
@@ -47,8 +44,6 @@ namespace MobileMarket.View
             if(!AssertNoEmptyEntry())
                 return false;
             if (!AssertPasswordMatch())
-                return false;
-            if (!AssertCPFOK())
                 return false;
             return true;
         }
@@ -66,57 +61,24 @@ namespace MobileMarket.View
             }
         }
 
-        private bool AssertCPFOK()
-        {
-            string text = entry_cpf.Text.Replace(".","").Replace("-","");
-            if(text.All(char.IsDigit) && text.Length == 11)
-            {
-                return true;
-            }
-            else
-            {
-                DisplayAlert("CPF Inválido","Preencha corretamente o campo de CPF.","OK");
-                return false;
-            }
-        }
-
-        private bool AssertEmptyEntry(Entry entry)
-        {
-            if(string.IsNullOrWhiteSpace(entry.Text))
-            {
-                return true;
-            }
-            return false;
-        }
-
         private bool AssertNoEmptyEntry()
         {
-            if(AssertEmptyEntry(entry_cpf))
-            {
-                DisplayAlert("Campo Vazio","Preencha o campo de CPF.","OK");
-                return false;
-            }
-            if (AssertEmptyEntry(entry_nome))
+            if (Helper.AssertEmptyEntry(entry_nome))
             {
                 DisplayAlert("Campo Vazio", "Preencha o campo de nome.", "OK");
                 return false;
             }
-            if (AssertEmptyEntry(entry_sobrenome))
-            {
-                DisplayAlert("Campo Vazio", "Preencha o campo de sobrenome.", "OK");
-                return false;
-            }
-            if (AssertEmptyEntry(entry_email))
+            if (Helper.AssertEmptyEntry(entry_email))
             {
                 DisplayAlert("Campo Vazio", "Preencha o campo de email.", "OK");
                 return false;
             }
-            if (AssertEmptyEntry(entry_senha))
+            if (Helper.AssertEmptyEntry(entry_senha))
             {
                 DisplayAlert("Campo Vazio", "Preencha o campo de senha.", "OK");
                 return false;
             }
-            if (AssertEmptyEntry(entry_cpf))
+            if (Helper.AssertEmptyEntry(entry_confirmar_senha))
             {
                 DisplayAlert("Campo Vazio", "Preencha o campo de confirmação de senha.", "OK");
                 return false;

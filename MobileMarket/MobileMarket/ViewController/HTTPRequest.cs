@@ -14,9 +14,9 @@ namespace MobileMarket.ViewController
 {
     public class HTTPRequest
     {
-        private static string urlBase = "https://192.168.15.10:45455";
+        private static string urlBase = "https://192.168.15.33:45455";
 
-        public static LoginTokenResult GetLoginToken(string cpf, string senha)
+        public static LoginTokenResult GetLoginToken(string email, string senha)
         {
             using (HttpClientHandler httpClientHandler = new HttpClientHandler())
             {
@@ -28,7 +28,7 @@ namespace MobileMarket.ViewController
                     FormUrlEncodedContent parametros = new FormUrlEncodedContent(new[]
                     {
                         new KeyValuePair<string,string>("grant_type","password"),
-                        new KeyValuePair<string,string>("username",cpf),
+                        new KeyValuePair<string,string>("username",email),
                         new KeyValuePair<string,string>("password",senha)
                     });
 
@@ -62,9 +62,7 @@ namespace MobileMarket.ViewController
                     string URL = urlBase + "/api/register";
                     FormUrlEncodedContent parametros = new FormUrlEncodedContent(new[]
                     {
-                        new KeyValuePair<string,string>("cpf",ClienteInfo.CPF),
                         new KeyValuePair<string,string>("nome",ClienteInfo.Nome),
-                        new KeyValuePair<string,string>("sobrenome",ClienteInfo.Sobrenome),
                         new KeyValuePair<string,string>("email",ClienteInfo.Email),
                         new KeyValuePair<string,string>("senha",ClienteInfo.Senha)
                     });
@@ -72,14 +70,9 @@ namespace MobileMarket.ViewController
                     try
                     {
                         HttpResponseMessage response = client.PostAsync(URL, parametros).GetAwaiter().GetResult();
-                        if (response.StatusCode == HttpStatusCode.Created)
+                        if (response.StatusCode == HttpStatusCode.Created || response.StatusCode == HttpStatusCode.BadRequest)
                         {
                             string result = response.Content.ReadAsStringAsync().Result;
-                            if (result == "\"CPF já existe.\"")
-                            {
-                                registerPage.DisplayAlert("CPF Inválido","Este CPF já está cadastrado.", "OK");
-                                return false;
-                            }
                             if (result == "\"Email já existe.\"")
                             {
                                 registerPage.DisplayAlert("Email Inválido","Este email já está cadastrado.","OK");
@@ -121,7 +114,7 @@ namespace MobileMarket.ViewController
                 using (HttpClient client = new HttpClient(httpClientHandler))
                 {
                     client.BaseAddress = new Uri(urlBase);
-                    string URL = urlBase + "/api/client?cpf=" + ClienteInfo.CPF;
+                    string URL = urlBase + "/api/usuario?email=" + ClienteInfo.Email;
 
                     try
                     {
@@ -130,6 +123,7 @@ namespace MobileMarket.ViewController
                         if (response.StatusCode == HttpStatusCode.OK)
                         {
                             string result = response.Content.ReadAsStringAsync().Result;
+
                             if(result == "null")
                             {
                                 return false;
@@ -137,11 +131,9 @@ namespace MobileMarket.ViewController
                             else
                             {
                                 Cliente clienteResult = JsonConvert.DeserializeObject<Cliente>(result);
-                                ClienteInfo.CPF = clienteResult.CPF;
+                                ClienteInfo.ID = clienteResult.ID;
                                 ClienteInfo.Email = clienteResult.Email;
                                 ClienteInfo.Nome = clienteResult.Nome;
-                                ClienteInfo.Sobrenome = clienteResult.Sobrenome;
-                                ClienteInfo.Creditos = clienteResult.Creditos;
                                 ClienteInfo.Senha = string.Empty;
                                 return true;
                             }
@@ -159,7 +151,7 @@ namespace MobileMarket.ViewController
             }
         }
 
-        public static List<Cupom> GetAvailableCupons()
+        public static List<Ponto> GetMyPontos()
         {
             using (HttpClientHandler httpClientHandler = new HttpClientHandler())
             {
@@ -167,14 +159,15 @@ namespace MobileMarket.ViewController
                 using (HttpClient client = new HttpClient(httpClientHandler))
                 {
                     client.BaseAddress = new Uri(urlBase);
-                    string URL = urlBase + "/api/cupon";
+                    string URL = urlBase + "/api/ponto?codigoUsuario=" + ClienteInfo.ID;
                     try
                     {
+                        client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", ClienteInfo.Token);
                         HttpResponseMessage response = client.GetAsync(URL).GetAwaiter().GetResult();
                         if (response.StatusCode == HttpStatusCode.OK || response.StatusCode == HttpStatusCode.BadRequest)
                         {
                             string resultJSON = response.Content.ReadAsStringAsync().Result;
-                            List<Cupom> result = JsonConvert.DeserializeObject<List<Cupom>>(resultJSON);
+                            List<Ponto> result = JsonConvert.DeserializeObject<List<Ponto>>(resultJSON);
                             return result;
                         }
                         return null;
@@ -187,7 +180,7 @@ namespace MobileMarket.ViewController
             }
         }
 
-        public static List<CupomResgatado> GetMyCupons()
+        public static bool PostRegisterPonto(Page registerPage, Ponto ponto)
         {
             using (HttpClientHandler httpClientHandler = new HttpClientHandler())
             {
@@ -195,60 +188,43 @@ namespace MobileMarket.ViewController
                 using (HttpClient client = new HttpClient(httpClientHandler))
                 {
                     client.BaseAddress = new Uri(urlBase);
-                    string URL = urlBase + "/api/cupon?cpf=" + ClienteInfo.CPF;
-                    try
+                    string URL = urlBase + "/api/ponto";
+                    FormUrlEncodedContent parametros = new FormUrlEncodedContent(new[]
                     {
-                        client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", ClienteInfo.Token);
-                        HttpResponseMessage response = client.GetAsync(URL).GetAwaiter().GetResult();
-                        if (response.StatusCode == HttpStatusCode.OK || response.StatusCode == HttpStatusCode.BadRequest)
-                        {
-                            string resultJSON = response.Content.ReadAsStringAsync().Result;
-                            List<CupomResgatado> result = JsonConvert.DeserializeObject<List<CupomResgatado>>(resultJSON);
-                            return result;
-                        }
-                        return null;
-                    }
-                    catch
-                    {
-                        return null;
-                    }
-                }
-            }
-        }
-
-        public static bool ResgatarCupom(string codigo_cupom)
-        {
-            using (HttpClientHandler httpClientHandler = new HttpClientHandler())
-            {
-                httpClientHandler.ServerCertificateCustomValidationCallback = (message, cert, chain, errors) => { return true; };
-                using (HttpClient client = new HttpClient(httpClientHandler))
-                {
-                    client.BaseAddress = new Uri(urlBase);
-                    string URL = urlBase + "/api/cupon?cpf=" + ClienteInfo.CPF + "&codigo_cupom=" + codigo_cupom;
+                        new KeyValuePair<string,string>("nome",ponto.Nome),
+                        new KeyValuePair<string,string>("descricao",ponto.Descricao),
+                        new KeyValuePair<string,string>("codigoUsuario",ponto.CodigoUsuario.ToString())
+                    });
 
                     try
                     {
                         client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", ClienteInfo.Token);
-                        HttpResponseMessage response = client.PostAsync(URL,null).GetAwaiter().GetResult();
-                        if (response.StatusCode == HttpStatusCode.OK)
+                        HttpResponseMessage response = client.PostAsync(URL, parametros).GetAwaiter().GetResult();
+                        if (response.StatusCode == HttpStatusCode.Created || response.StatusCode == HttpStatusCode.BadRequest)
                         {
                             string result = response.Content.ReadAsStringAsync().Result;
-                            if (result == "\"Cupom resgatado com sucesso!\"")
+                            if (result == "\"Falha ao conectar com o banco.\"")
                             {
-                                return true;
-                            }
-                            else
-                            {
+                                DisplayConnectionError(registerPage);
                                 return false;
                             }
+                            if (result == "\"Ponto cadastrado.\"")
+                            {
+                                registerPage.DisplayAlert("Ponto criado", "O ponto de medição foi criado com sucesso.", "OK");
+                                return true;
+                            }
+                            DisplayConnectionError(registerPage);
+                            return false;
                         }
                         else
                         {
+                            DisplayConnectionError(registerPage);
                             return false;
                         }
                     }
                     catch
                     {
+                        DisplayConnectionError(registerPage);
                         return false;
                     }
                 }

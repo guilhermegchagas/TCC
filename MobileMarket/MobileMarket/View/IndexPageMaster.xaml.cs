@@ -30,15 +30,11 @@ namespace MobileMarket.View
                     ((MasterDetailPage)Parent).IsPresented = false;
                     break;
                 case "Iniciar Coleta":
-                    ((MasterDetailPage)Parent).Detail = new NavigationPage(new QRConnectPage());
-                    ((MasterDetailPage)Parent).IsPresented = false;
                     break;
                 case "Resgatar Cupons":
-                    ((MasterDetailPage)Parent).Detail = new NavigationPage(new AvailableCuponsPage());
-                    ((MasterDetailPage)Parent).IsPresented = false;
                     break;
                 case "Meus Cupons":
-                    ((MasterDetailPage)Parent).Detail = new NavigationPage(new MyCuponsPage());
+                    ((MasterDetailPage)Parent).Detail = new NavigationPage(new PontosPage());
                     ((MasterDetailPage)Parent).IsPresented = false;
                     break;
             }

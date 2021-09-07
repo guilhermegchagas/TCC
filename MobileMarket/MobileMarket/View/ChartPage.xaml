@@ -13,7 +13,15 @@
     </ContentPage.BindingContext>
     <ContentPage.Content>
         <StackLayout>
-            <chart:SfChart>
+            <chart:SfChart 
+                HorizontalOptions="FillAndExpand" 
+                VerticalOptions="FillAndExpand">
+                <chart:SfChart.PrimaryAxis>
+                    <chart:DateTimeAxis/>
+                </chart:SfChart.PrimaryAxis>
+                <chart:SfChart.SecondaryAxis>
+                    <chart:NumericalAxis/>
+                </chart:SfChart.SecondaryAxis>
                 <chart:SfChart.Series>
                     <chart:ColumnSeries 
                         ItemsSource="{Binding Demands}" 

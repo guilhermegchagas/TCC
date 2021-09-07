@@ -4,11 +4,11 @@ using System.Text;
 
 namespace MobileMarket.Model
 {
-    public class Cliente
+    public class Ponto
     {
-        public string ID { get; set; }
+        public int Codigo { get; set; }
         public string Nome { get; set; }
-        public string Email { get; set; }
-        public string Senha { get; set; }
+        public string Descricao { get; set; }
+        public int CodigoUsuario { get; set; }
     }
 }
