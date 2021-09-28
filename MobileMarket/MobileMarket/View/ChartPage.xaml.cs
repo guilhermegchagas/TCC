@@ -7,20 +7,23 @@ using MobileMarket.Model;
 using Xamarin.Forms.PlatformConfiguration;
 using Xamarin.Essentials;
 using MobileMarket.ViewModel;
+using Xamarin.Forms.PlatformConfiguration.AndroidSpecific;
 
 namespace MobileMarket.View
 {
     [XamlCompilation(XamlCompilationOptions.Compile)]
-    public partial class ChartPage : ContentPage
+    public partial class ChartPage : Xamarin.Forms.TabbedPage
     {
         protected ChartPageViewModel ViewModel
         {
             get { return (ChartPageViewModel)BindingContext; }
         }
 
-        public ChartPage()
+        public ChartPage(Ponto ponto)
         {
             InitializeComponent();
+            On<Android>().SetToolbarPlacement(ToolbarPlacement.Bottom);
+            ViewModel.ponto = ponto;
         }
     }
 }

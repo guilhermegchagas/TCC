@@ -63,6 +63,7 @@ namespace MobileMarket.View
         {
             Button button = sender as Button;
             Ponto ponto = (Ponto)button.BindingContext;
+            Navigation.PushAsync(new ChartPage(ponto));
         }
 
         private void CriarPontoButtonClicked(object sender, EventArgs e)

@@ -27,7 +27,7 @@ namespace MobileMarket.View
 
         private void GoToResgatarCupons(object sender, EventArgs e)
         {
-            Navigation.PushAsync(new ChartPage());
+            Navigation.PushAsync(new IndexPage());
         }
 
         private void GoToMeusCupons(object sender, EventArgs e)

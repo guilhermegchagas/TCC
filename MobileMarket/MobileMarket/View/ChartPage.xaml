@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
-<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+<TabbedPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:d="http://xamarin.com/schemas/2014/forms/design"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
@@ -7,28 +7,34 @@
              xmlns:viewModel="clr-namespace:MobileMarket.ViewModel"
              mc:Ignorable="d"
              x:Class="MobileMarket.View.ChartPage"
-             Title="Gráfico">
-    <ContentPage.BindingContext>
+             Title="{Binding ponto.Nome}">
+    <TabbedPage.BindingContext>
         <viewModel:ChartPageViewModel/>
-    </ContentPage.BindingContext>
-    <ContentPage.Content>
-        <StackLayout>
-            <chart:SfChart 
-                HorizontalOptions="FillAndExpand" 
-                VerticalOptions="FillAndExpand">
-                <chart:SfChart.PrimaryAxis>
-                    <chart:DateTimeAxis/>
-                </chart:SfChart.PrimaryAxis>
-                <chart:SfChart.SecondaryAxis>
-                    <chart:NumericalAxis/>
-                </chart:SfChart.SecondaryAxis>
-                <chart:SfChart.Series>
-                    <chart:ColumnSeries 
-                        ItemsSource="{Binding Demands}" 
-                        XBindingPath="Demand" 
-	 					YBindingPath="Year2010"/>
-                </chart:SfChart.Series>
-            </chart:SfChart>
-        </StackLayout>
-    </ContentPage.Content>
-</ContentPage>
+    </TabbedPage.BindingContext>
+    <ContentPage Title="Gráfico" IconImageSource="chart_icon.png">
+        <ContentPage.Content>
+            <StackLayout>
+                <chart:SfChart 
+                        Margin="5"
+                        HorizontalOptions="FillAndExpand" 
+                        VerticalOptions="FillAndExpand">
+                    <chart:SfChart.PrimaryAxis>
+                        <chart:DateTimeAxis/>
+                    </chart:SfChart.PrimaryAxis>
+                    <chart:SfChart.SecondaryAxis>
+                        <chart:NumericalAxis/>
+                    </chart:SfChart.SecondaryAxis>
+                    <chart:SfChart.Series>
+                        <chart:FastLineSeries 
+                                ItemsSource="{Binding Medicoes}" 
+                                XBindingPath="Horario" 
+	 					        YBindingPath="Potencia"/>
+                    </chart:SfChart.Series>
+                </chart:SfChart>
+            </StackLayout>
+        </ContentPage.Content>
+    </ContentPage>
+    <ContentPage Title="Dados" IconImageSource="table_icon.png">
+    </ContentPage>
+    
+</TabbedPage>

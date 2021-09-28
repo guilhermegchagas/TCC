@@ -21,8 +21,8 @@
                                             <TapGestureRecognizer Tapped="ArrowTapped" NumberOfTapsRequired="1"/>
                                         </StackLayout.GestureRecognizers>
                                         <AbsoluteLayout WidthRequest="1" HeightRequest="1">
-                                            <Image Source="cupom_icon.png" AbsoluteLayout.LayoutBounds="-0.05,0.2,40,40" AbsoluteLayout.LayoutFlags="PositionProportional" Rotation="-90"/>
-                                            <Image Source="cupom_icon.png" AbsoluteLayout.LayoutBounds="-0.015,0.25,40,40" AbsoluteLayout.LayoutFlags="PositionProportional" Rotation="-75"/>
+                                            <Image Source="energy_icon.png" AbsoluteLayout.LayoutBounds="-0.05,0.2,40,40" AbsoluteLayout.LayoutFlags="PositionProportional" Rotation="-90"/>
+                                            <Image Source="energy_icon.png" AbsoluteLayout.LayoutBounds="-0.015,0.25,40,40" AbsoluteLayout.LayoutFlags="PositionProportional" Rotation="-75"/>
                                         </AbsoluteLayout>
                                         <StackLayout Orientation="Horizontal"  HorizontalOptions="Center">
                                             <Label Text="{Binding Nome}" FontAttributes="Bold" FontSize="Large" HorizontalOptions="Center"/>
