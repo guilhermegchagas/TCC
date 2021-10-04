@@ -9,7 +9,7 @@
              Title="Pontos de Medição">
     <ContentPage.Content>
         <StackLayout Orientation="Vertical">
-            <ScrollView x:Name="scrollView">
+            <ScrollView x:Name="scrollView" VerticalOptions="FillAndExpand">
                 <CollectionView x:Name="listaPontosControl" Margin="5">
                     <CollectionView.ItemTemplate>
                         <DataTemplate>

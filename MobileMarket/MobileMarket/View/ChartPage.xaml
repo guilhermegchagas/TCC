@@ -5,6 +5,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:chart="clr-namespace:Syncfusion.SfChart.XForms;assembly=Syncfusion.SfChart.XForms"
              xmlns:viewModel="clr-namespace:MobileMarket.ViewModel"
+             xmlns:local="clr-namespace:MobileMarket.View"
              mc:Ignorable="d"
              x:Class="MobileMarket.View.ChartPage"
              Title="{Binding ponto.Nome}">
@@ -13,7 +14,29 @@
     </TabbedPage.BindingContext>
     <ContentPage Title="Gráfico" IconImageSource="chart_icon.png">
         <ContentPage.Content>
-            <StackLayout>
+            <StackLayout Orientation="Vertical">
+                <StackLayout Orientation="Horizontal">
+                    <local:DateTimePicker
+                        x:Name="dataInicioControl"
+                        ColumnHeaderHeight="40"
+                        HorizontalOptions="Start"
+                        IsOpen="True"
+                        PickerHeight="400"
+                        PickerMode="Dialog"
+                        PickerWidth="300"
+                        SelectedItem="{Binding DataInicio, Mode=TwoWay}"
+                        VerticalOptions="Center" />
+                    <local:DateTimePicker
+                        x:Name="dataFimControl"
+                        ColumnHeaderHeight="40"
+                        HorizontalOptions="Start"
+                        IsOpen="True"
+                        PickerHeight="400"
+                        PickerMode="Dialog"
+                        PickerWidth="300"
+                        SelectedItem="{Binding DataFim, Mode=TwoWay}"
+                        VerticalOptions="Center" />
+                </StackLayout>
                 <chart:SfChart 
                         Margin="5"
                         HorizontalOptions="FillAndExpand" 
@@ -36,5 +59,4 @@
     </ContentPage>
     <ContentPage Title="Dados" IconImageSource="table_icon.png">
     </ContentPage>
-    
 </TabbedPage>
