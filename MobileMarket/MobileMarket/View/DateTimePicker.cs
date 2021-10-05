@@ -159,7 +159,7 @@ namespace MobileMarket.View
             }
 
             //populate Hours
-            for (int i = 1; i <= 24; i++)
+            for (int i = 0; i < 24; i++)
             {
                 if (i < 10)
                 {

@@ -16,25 +16,29 @@
         <ContentPage.Content>
             <StackLayout Orientation="Vertical">
                 <StackLayout Orientation="Horizontal">
+                    <Label HeightRequest="30" Text="{Binding DataInicio.Date, StringFormat='{0:MMMM dd, yyyy}'}"></Label>
+                    <Label HeightRequest="30" Text="{Binding DataInicio.TimeOfDay, StringFormat='{}{0:hh\\:mm}'}"></Label>
+                    <Button ImageSource="table_icon.png" WidthRequest="30" HeightRequest="30" Clicked="DataInicio_Clicked"/>
                     <local:DateTimePicker
                         x:Name="dataInicioControl"
                         ColumnHeaderHeight="40"
                         HorizontalOptions="Start"
-                        IsOpen="True"
                         PickerHeight="400"
                         PickerMode="Dialog"
                         PickerWidth="300"
-                        SelectedItem="{Binding DataInicio, Mode=TwoWay}"
+                        SelectedItem="{Binding DataInicioCollection, Mode=TwoWay}"
                         VerticalOptions="Center" />
+                    <Label HeightRequest="30" Text="{Binding DataFim.Date, StringFormat='{0:MMMM dd, yyyy}'}"></Label>
+                    <Label HeightRequest="30" Text="{Binding DataFim.TimeOfDay, StringFormat='{}{0:hh\\:mm}'}"></Label>
+                    <Button ImageSource="table_icon.png" WidthRequest="30" HeightRequest="30" Clicked="DataFim_Clicked"/>
                     <local:DateTimePicker
                         x:Name="dataFimControl"
                         ColumnHeaderHeight="40"
                         HorizontalOptions="Start"
-                        IsOpen="True"
                         PickerHeight="400"
                         PickerMode="Dialog"
                         PickerWidth="300"
-                        SelectedItem="{Binding DataFim, Mode=TwoWay}"
+                        SelectedItem="{Binding DataFimCollection, Mode=TwoWay}"
                         VerticalOptions="Center" />
                 </StackLayout>
                 <chart:SfChart 

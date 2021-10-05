@@ -25,5 +25,15 @@ namespace MobileMarket.View
             On<Android>().SetToolbarPlacement(ToolbarPlacement.Bottom);
             ViewModel.ponto = ponto;
         }
+
+        private void DataInicio_Clicked(object sender, EventArgs e)
+        {
+            dataInicioControl.IsOpen = true;
+        }
+
+        private void DataFim_Clicked(object sender, EventArgs e)
+        {
+            dataFimControl.IsOpen = true;
+        }
     }
 }
