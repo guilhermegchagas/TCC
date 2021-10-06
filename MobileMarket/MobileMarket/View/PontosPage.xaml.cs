@@ -50,22 +50,37 @@ namespace MobileMarket.View
         private void ArrowTapped(object sender, EventArgs e)
         {
             StackLayout stackPai = (StackLayout)sender;
-            StackLayout stack1 = (StackLayout)stackPai.Children[1];
-            StackLayout stack2 = (StackLayout)stackPai.Children[2];
-            Image imagem = (Image)stack1.Children[1];
+            Grid grid = (Grid)stackPai.Children[0];
+            StackLayout stack = (StackLayout)stackPai.Children[1];
+            Image imagem = (Image)grid.Children[1];
             if (imagem.Source.ToString() == "File: arrowdown.png")
             {
-                stack2.IsVisible = true;
+                stack.IsVisible = true;
                 imagem.Source = "arrowup.png";
+               
             }
             else
             {
-                stack2.IsVisible = false;
+                stack.IsVisible = false;
                 imagem.Source = "arrowdown.png";
             }       
         }
 
         private void ShowDetailButtonClicked(object sender, EventArgs e)
+        {
+            Button button = sender as Button;
+            Ponto ponto = (Ponto)button.BindingContext;
+            Navigation.PushAsync(new ChartPage(ponto));
+        }
+
+        private void EditButtonClicked(object sender, EventArgs e)
+        {
+            Button button = sender as Button;
+            Ponto ponto = (Ponto)button.BindingContext;
+            Navigation.PushAsync(new ChartPage(ponto));
+        }
+
+        private void DeleteButtonClicked(object sender, EventArgs e)
         {
             Button button = sender as Button;
             Ponto ponto = (Ponto)button.BindingContext;

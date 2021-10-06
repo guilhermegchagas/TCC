@@ -10,5 +10,12 @@ namespace MobileMarket.Model
         public string Nome { get; set; }
         public string Descricao { get; set; }
         public int CodigoUsuario { get; set; }
+        public bool IsDescricaoVisible
+        { 
+            get
+            {
+                return !string.IsNullOrEmpty(Descricao);
+            }
+        }
     }
 }

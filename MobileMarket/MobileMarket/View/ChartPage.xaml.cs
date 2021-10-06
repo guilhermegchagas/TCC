@@ -35,5 +35,40 @@ namespace MobileMarket.View
         {
             dataFimControl.IsOpen = true;
         }
+
+        private void PotenciaTotal_Clicked(object sender, EventArgs e)
+        {
+            ViewModel.MedicaoSelecionada = "PotenciaTotal";
+        }
+
+        private void PotenciaAtiva_Clicked(object sender, EventArgs e)
+        {
+            ViewModel.MedicaoSelecionada = "PotenciaAtiva";
+        }
+
+        private void PotenciaReativa_Clicked(object sender, EventArgs e)
+        {
+            ViewModel.MedicaoSelecionada = "PotenciaReativa";
+        }
+
+        private void FatorPotencia_Clicked(object sender, EventArgs e)
+        {
+            ViewModel.MedicaoSelecionada = "FatorPotencia";
+        }
+
+        private void Corrente_Clicked(object sender, EventArgs e)
+        {
+            ViewModel.MedicaoSelecionada = "Corrente";
+        }
+
+        private void Tensao_Clicked(object sender, EventArgs e)
+        {
+            ViewModel.MedicaoSelecionada = "Tensao";
+        }
+
+        private void Frequencia_Clicked(object sender, EventArgs e)
+        {
+            ViewModel.MedicaoSelecionada = "Frequencia";
+        }
     }
 }

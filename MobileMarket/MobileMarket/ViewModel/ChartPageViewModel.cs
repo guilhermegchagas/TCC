@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Globalization;
 using System.Text;
 
@@ -11,6 +12,17 @@ namespace MobileMarket.ViewModel
     {
 		public Ponto ponto { get; set; }
 		public ObservableCollection<Medicao> Medicoes { get; set; }
+
+        private string _medicaoSelecionada = "PotenciaTotal";
+        public string MedicaoSelecionada
+        {
+            get { return _medicaoSelecionada; }
+            set
+            {
+                _medicaoSelecionada = value;
+                OnPropertyChanged(nameof(MedicaoSelecionada));
+            }
+        }
 
         #region Date Control
         private ObservableCollection<object> _dataInicioCollection;
@@ -119,12 +131,12 @@ namespace MobileMarket.ViewModel
             Medicoes = new ObservableCollection<Medicao>();
 			for(int i = 1; i <= 10; i++)
             {
-				Medicoes.Add(new Medicao(i, DateTime.Now.AddHours(i), 10*i, 37));
+				Medicoes.Add(new Medicao(i, DateTime.Now.AddHours(i), 10 * i , 20 * i, 30 * i, 40 * i, 50* i, 60 * i, 70 * i, 37));
 			}
 			for (int i = 1; i <= 10; i++)
 			{
-				Medicoes.Add(new Medicao(i, DateTime.Now.AddDays(i), 10 * i, 37));
-			}
+				Medicoes.Add(new Medicao(i, DateTime.Now.AddDays(i), 10 * i, 20 * i, 30 * i, 40 * i, 50 * i, 60 * i, 70 * i, 37));
+            }
         }
     }
 }

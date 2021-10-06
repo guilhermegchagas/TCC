@@ -8,14 +8,36 @@ namespace MobileMarket.Model
     {
         public int Codigo { get; set; }
         public DateTime Horario { get; set; }
-        public double Potencia { get; set; }
+        public double PotenciaTotal { get; set; }
+        public double PotenciaAtiva { get; set; }
+        public double PotenciaReativa { get; set; }
+        public double FatorPotencia { get; set; }
+        public double Corrente { get; set; }
+        public double Tensao { get; set; }
+        public double Frequencia { get; set; }
         public int CodigoPonto { get; set; }
 
-        public Medicao(int codigo, DateTime horario, double potencia, int codigoPonto)
+        public Medicao(
+            int codigo, 
+            DateTime horario, 
+            double potencia_total,
+            double potencia_ativa,
+            double potencia_reativa,
+            double fator_potencia,
+            double corrente,
+            double tensao,
+            double frequencia,
+            int codigoPonto)
         {
             Codigo = codigo;
             Horario = horario;
-            Potencia = potencia;
+            PotenciaTotal = potencia_total;
+            PotenciaAtiva = potencia_ativa;
+            PotenciaReativa = potencia_reativa;
+            FatorPotencia = fator_potencia;
+            Corrente = corrente;
+            Tensao = tensao;
+            Frequencia = frequencia;
             CodigoPonto = codigoPonto;
         }
     }
