@@ -27,9 +27,9 @@
             </Grid.RowDefinitions>
             <Label Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="3" Margin="10,0,10,0" Text="Nome" VerticalTextAlignment="End" HorizontalTextAlignment="Start"/>
             <Entry Grid.Row="1" x:Name="entry_nome"  Grid.Column="1" Grid.ColumnSpan="3" Margin="10,0,10,0"/>
-            <Label Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="3" Margin="10,0,10,0" Text="Descrição" VerticalTextAlignment="End" HorizontalTextAlignment="Start"/>
-            <Frame Grid.Row="3" Grid.Column="1" Grid.ColumnSpan="3" BorderColor="LightGray" HasShadow="False" Padding="0" Margin="10,0,10,0">
-                <Editor x:Name="editor_descricao"/>
+            <Label Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="3" Margin="10,0,10,5" Text="Descrição" VerticalTextAlignment="End" HorizontalTextAlignment="Start"/>
+            <Frame Grid.Row="3" Grid.Column="1" Grid.ColumnSpan="3" BorderColor="White" HasShadow="False" Padding="0" Margin="10,0,10,0" BackgroundColor="Transparent">
+                <Editor x:Name="editor_descricao" BackgroundColor="Transparent"/>
             </Frame>
             <Button x:Name="botaoFinalizar"  Grid.Row="5" Grid.Column="2" Margin="30,0,30,0" Clicked="FinishRegisterButtonClicked"/>
         </Grid>

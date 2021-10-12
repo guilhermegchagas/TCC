@@ -8,6 +8,10 @@
              xmlns:local="clr-namespace:MobileMarket.View"
              mc:Ignorable="d"
              x:Class="MobileMarket.View.ChartPage"
+             BarBackgroundColor="#ffcc00"
+             SelectedTabColor="White"
+             UnselectedTabColor="Black"
+             BarTextColor="Black"
              Title="{Binding ponto.Nome}">
     <TabbedPage.BindingContext>
         <viewModel:ChartPageViewModel/>
@@ -40,18 +44,18 @@
                      HorizontalOptions="FillAndExpand">
                     <Frame Grid.Column="0" BorderColor="Black" Padding="2">
                         <StackLayout Orientation="Vertical" Spacing="1">
-                            <Label Text="{Binding DataInicio.Date, StringFormat='{0:MMMM dd, yyyy}'}"></Label>
-                            <Label Text="{Binding DataInicio.TimeOfDay, StringFormat='{}{0:hh\\:mm}'}"></Label>
+                            <Label Text="{Binding DataInicio.Date, StringFormat='{0:MMMM dd, yyyy}'}" TextColor="Black"/>
+                            <Label Text="{Binding DataInicio.TimeOfDay, StringFormat='{}{0:hh\\:mm}'}" TextColor="Black"/>
                         </StackLayout>
                     </Frame>
-                    <ImageButton Grid.Column="1" Source="table_icon.png" WidthRequest="30" HeightRequest="30" BackgroundColor="Transparent" Clicked="DataInicio_Clicked"/>
+                    <ImageButton Grid.Column="1" Source="calendar_icon.png" WidthRequest="30" HeightRequest="30" BackgroundColor="Transparent" Clicked="DataInicio_Clicked"/>
                     <Frame Grid.Column="2" BorderColor="Black" Padding="2">
                         <StackLayout Orientation="Vertical" Spacing="1">
-                            <Label Text="{Binding DataFim.Date, StringFormat='{0:MMMM dd, yyyy}'}"></Label>
-                            <Label Text="{Binding DataFim.TimeOfDay, StringFormat='{}{0:hh\\:mm}'}"></Label>
+                            <Label Text="{Binding DataFim.Date, StringFormat='{0:MMMM dd, yyyy}'}" TextColor="Black"/>
+                            <Label Text="{Binding DataFim.TimeOfDay, StringFormat='{}{0:hh\\:mm}'}" TextColor="Black"/>
                         </StackLayout>
                     </Frame>
-                    <ImageButton Grid.Column="3" Source="table_icon.png" WidthRequest="30" HeightRequest="30" BackgroundColor="Transparent" Clicked="DataFim_Clicked"/>
+                    <ImageButton Grid.Column="3" Source="calendar_icon.png" WidthRequest="30" HeightRequest="30" BackgroundColor="Transparent" Clicked="DataFim_Clicked"/>
                 </Grid>
                 <Grid
                      ColumnDefinitions="*, *, *, *, *, *, *"
@@ -63,10 +67,11 @@
                     <Button Grid.Column="2" Text="Q(VAR)" WidthRequest="30" HeightRequest="30" CornerRadius="30" BackgroundColor="Violet" Padding="1" Clicked="PotenciaReativa_Clicked"/>
                     <Button Grid.Column="3" Text="FP" WidthRequest="30" HeightRequest="30" CornerRadius="30" BackgroundColor="Brown" Padding="1" Clicked="FatorPotencia_Clicked"/>
                     <Button Grid.Column="4" Text="I(A)" WidthRequest="30" HeightRequest="30" CornerRadius="30" BackgroundColor="Green" Padding="1" Clicked="Corrente_Clicked"/>
-                    <Button Grid.Column="5" Text="V(V)" WidthRequest="30" HeightRequest="30" CornerRadius="30" BackgroundColor="Gray" Padding="1" Clicked="Tensao_Clicked"/>
+                    <Button Grid.Column="5" Text="V(V)" WidthRequest="30" HeightRequest="30" CornerRadius="30" BackgroundColor="Yellow" Padding="1" Clicked="Tensao_Clicked"/>
                     <Button Grid.Column="6" Text="f(Hz)" WidthRequest="30" HeightRequest="30" CornerRadius="30" BackgroundColor="Purple" Padding="1" Clicked="Frequencia_Clicked"/>
                 </Grid>
                 <chart:SfChart 
+                        ChartPadding="5"
                         Margin="10"
                         HorizontalOptions="FillAndExpand" 
                         VerticalOptions="FillAndExpand">

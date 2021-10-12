@@ -50,11 +50,10 @@ namespace MobileMarket.View
                 };
                 Label label = new Label 
                 { 
-                    Text = "Você não possui nenhum ponto de medição cadastrado.", 
-                    BackgroundColor = Color.White, 
+                    Text = "Você não possui nenhum ponto de medição cadastrado.",
                     HorizontalOptions = LayoutOptions.Center, 
                     VerticalOptions = LayoutOptions.Center, 
-                    TextColor = Color.Black,
+                    TextColor = Color.White,
                     Margin = new Thickness (10,30,10,30)
                 };
 
