@@ -22,6 +22,8 @@ namespace MobileMarket.View
         public ChartPage(Ponto ponto)
         {
             InitializeComponent();
+            GradiantStyles.SetContentPageGradiant(chartPage);
+            GradiantStyles.SetContentPageGradiant(dataPage);
             On<Android>().SetToolbarPlacement(ToolbarPlacement.Bottom);
             ViewModel.ponto = ponto;
         }

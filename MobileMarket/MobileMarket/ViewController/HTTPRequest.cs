@@ -188,7 +188,7 @@ namespace MobileMarket.ViewController
                 using (HttpClient client = new HttpClient(httpClientHandler))
                 {
                     client.BaseAddress = new Uri(urlBase);
-                    string URL = urlBase + "/api/ponto";
+                    string URL = urlBase + "/api/ponto/cadastrar";
                     FormUrlEncodedContent parametros = new FormUrlEncodedContent(new[]
                     {
                         new KeyValuePair<string,string>("nome",ponto.Nome),
@@ -211,6 +211,110 @@ namespace MobileMarket.ViewController
                             if (result == "\"Ponto cadastrado.\"")
                             {
                                 registerPage.DisplayAlert("Ponto criado", "O ponto de medição foi criado com sucesso.", "OK");
+                                return true;
+                            }
+                            DisplayConnectionError(registerPage);
+                            return false;
+                        }
+                        else
+                        {
+                            DisplayConnectionError(registerPage);
+                            return false;
+                        }
+                    }
+                    catch
+                    {
+                        DisplayConnectionError(registerPage);
+                        return false;
+                    }
+                }
+            }
+        }
+
+        public static bool PutUpdatePonto(Page registerPage, Ponto ponto)
+        {
+            using (HttpClientHandler httpClientHandler = new HttpClientHandler())
+            {
+                httpClientHandler.ServerCertificateCustomValidationCallback = (message, cert, chain, errors) => { return true; };
+                using (HttpClient client = new HttpClient(httpClientHandler))
+                {
+                    client.BaseAddress = new Uri(urlBase);
+                    string URL = urlBase + "/api/ponto/atualizar";
+                    FormUrlEncodedContent parametros = new FormUrlEncodedContent(new[]
+                    {
+                        new KeyValuePair<string,string>("codigo",ponto.Codigo.ToString()),
+                        new KeyValuePair<string,string>("nome",ponto.Nome),
+                        new KeyValuePair<string,string>("descricao",ponto.Descricao),
+                        new KeyValuePair<string,string>("codigoUsuario",ponto.CodigoUsuario.ToString())
+                    });
+
+                    try
+                    {
+                        client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", ClienteInfo.Token);
+                        HttpResponseMessage response = client.PutAsync(URL, parametros).GetAwaiter().GetResult();
+                        if (response.StatusCode == HttpStatusCode.Created || response.StatusCode == HttpStatusCode.BadRequest)
+                        {
+                            string result = response.Content.ReadAsStringAsync().Result;
+                            if (result == "\"Falha ao conectar com o banco.\"")
+                            {
+                                DisplayConnectionError(registerPage);
+                                return false;
+                            }
+                            if (result == "\"Ponto atualizado.\"")
+                            {
+                                registerPage.DisplayAlert("Ponto atualizado", "O ponto de medição foi atualizado com sucesso.", "OK");
+                                return true;
+                            }
+                            DisplayConnectionError(registerPage);
+                            return false;
+                        }
+                        else
+                        {
+                            DisplayConnectionError(registerPage);
+                            return false;
+                        }
+                    }
+                    catch
+                    {
+                        DisplayConnectionError(registerPage);
+                        return false;
+                    }
+                }
+            }
+        }
+
+        public static bool DeletePonto(Page registerPage, Ponto ponto)
+        {
+            using (HttpClientHandler httpClientHandler = new HttpClientHandler())
+            {
+                httpClientHandler.ServerCertificateCustomValidationCallback = (message, cert, chain, errors) => { return true; };
+                using (HttpClient client = new HttpClient(httpClientHandler))
+                {
+                    client.BaseAddress = new Uri(urlBase);
+                    string URL = urlBase + "/api/ponto/deletar";
+                    FormUrlEncodedContent parametros = new FormUrlEncodedContent(new[]
+                    {
+                        new KeyValuePair<string,string>("codigo",ponto.Codigo.ToString()),
+                        new KeyValuePair<string,string>("nome",ponto.Nome),
+                        new KeyValuePair<string,string>("descricao",ponto.Descricao),
+                        new KeyValuePair<string,string>("codigoUsuario",ponto.CodigoUsuario.ToString())
+                    });
+
+                    try
+                    {
+                        client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", ClienteInfo.Token);
+                        HttpResponseMessage response = client.PostAsync(URL, parametros).GetAwaiter().GetResult();
+                        if (response.StatusCode == HttpStatusCode.Created || response.StatusCode == HttpStatusCode.BadRequest)
+                        {
+                            string result = response.Content.ReadAsStringAsync().Result;
+                            if (result == "\"Falha ao conectar com o banco.\"")
+                            {
+                                DisplayConnectionError(registerPage);
+                                return false;
+                            }
+                            if (result == "\"Ponto deletado.\"")
+                            {
+                                registerPage.DisplayAlert("Ponto deletado", "O ponto de medição foi deletado com sucesso.", "OK");
                                 return true;
                             }
                             DisplayConnectionError(registerPage);

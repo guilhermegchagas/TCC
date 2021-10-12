@@ -31,7 +31,7 @@
             <Frame Grid.Row="3" Grid.Column="1" Grid.ColumnSpan="3" BorderColor="LightGray" HasShadow="False" Padding="0" Margin="10,0,10,0">
                 <Editor x:Name="editor_descricao"/>
             </Frame>
-            <Button Grid.Row="5" Text="Cadastrar Ponto"  Grid.Column="2" Margin="30,0,30,0" Clicked="FinishRegisterButtonClicked"/>
+            <Button x:Name="botaoFinalizar"  Grid.Row="5" Grid.Column="2" Margin="30,0,30,0" Clicked="FinishRegisterButtonClicked"/>
         </Grid>
     </ContentPage.Content>
 </ContentPage>

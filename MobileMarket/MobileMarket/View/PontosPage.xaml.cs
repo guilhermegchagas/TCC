@@ -20,6 +20,7 @@ namespace MobileMarket.View
         public PontosPage()
         {
             InitializeComponent();
+            GradiantStyles.SetContentPageGradiant(this);
             UpdateLista();
         }
 
@@ -36,14 +37,35 @@ namespace MobileMarket.View
             }
             if (listaPontos == null)
             {
-                Label label = new Label { 
+                StackLayout stack = new StackLayout
+                {
+                    Orientation = StackOrientation.Vertical,
+                    VerticalOptions = LayoutOptions.Center
+                };
+                Image medicaoIcon = new Image
+                {
+                    Source = "ponto_medicao_icon.png",
+                    HeightRequest = 100,
+                    WidthRequest = 100
+                };
+                Label label = new Label 
+                { 
                     Text = "Você não possui nenhum ponto de medição cadastrado.", 
                     BackgroundColor = Color.White, 
                     HorizontalOptions = LayoutOptions.Center, 
                     VerticalOptions = LayoutOptions.Center, 
-                    TextColor = Color.Black 
+                    TextColor = Color.Black,
+                    Margin = new Thickness (10,30,10,30)
                 };
-                scrollView.Content = label;
+
+                stack.Children.Add(medicaoIcon);
+                stack.Children.Add(label);
+
+                scrollView.Content = stack;
+            }
+            else
+            {
+                scrollView.Content = listaPontosControl;
             }
         }
 
@@ -77,7 +99,7 @@ namespace MobileMarket.View
         {
             Button button = sender as Button;
             Ponto ponto = (Ponto)button.BindingContext;
-            Navigation.PushAsync(new ChartPage(ponto));
+            Navigation.PushAsync(new CriarPontoPage(this,ponto));
         }
 
         private void DeleteButtonClicked(object sender, EventArgs e)

@@ -8,13 +8,19 @@
     <Application.Resources>
         <ResourceDictionary>
             <Style TargetType="NavigationPage">
-                <Setter Property="BarBackgroundColor" Value="#006600" />
-                <Setter Property="BarTextColor" Value="White" />
+                <Setter Property="BarBackgroundColor" Value="#ffcc00" />
+                <Setter Property="BarTextColor" Value="Black" />
             </Style>
             <Style TargetType="Button">
-                <Setter Property="BackgroundColor" Value="#006600" />
-                <Setter Property="TextColor" Value="White" />
+                <Setter Property="BackgroundColor" Value="#ffcc00" />
+                <Setter Property="TextColor" Value="Black" />
                 <Setter Property="BorderRadius" Value="15" />
+            </Style>
+            <Style TargetType="Label">
+                <Setter Property="TextColor" Value="White" />
+            </Style>
+            <Style TargetType="Entry">
+                <Setter Property="TextColor" Value="White" />
             </Style>
         </ResourceDictionary>
     </Application.Resources>

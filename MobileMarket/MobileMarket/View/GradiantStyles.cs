@@ -15,8 +15,8 @@ namespace MobileMarket.View
 				Rotation = 150,
 				Steps = new GradientStepCollection()
 				{
-					new GradientStep(Color.White, 0),
-					new GradientStep(Color.FromHex("#e6ffe6"), 1)
+					new GradientStep(Color.FromHex("#737373"), 0),
+					new GradientStep(Color.FromHex("#4d4d4d"), 1)
 				}
 			};
 			ContentPageGloss.SetBackgroundGradient(page,bkgrndGradient);

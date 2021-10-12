@@ -41,7 +41,7 @@ namespace MobileMarket.View
                     ClienteInfo.Token = accessToken.AccessToken;
                     if(HTTPRequest.UpdateClientInfo())
                     {
-                        App.Current.MainPage = new IndexPage();
+                        App.Current.MainPage = new NavigationPage(new PontosPage());
                     }
                     else
                     {
