@@ -26,6 +26,7 @@ namespace MobileMarket.View
             GradiantStyles.SetContentPageGradiant(dataPage);
             On<Xamarin.Forms.PlatformConfiguration.Android>().SetToolbarPlacement(ToolbarPlacement.Bottom);
             ViewModel.ponto = ponto;
+            ViewModel.dataGrid = dataGrid;
         }
 
         private void DataInicio_Clicked(object sender, EventArgs e)
@@ -51,11 +52,6 @@ namespace MobileMarket.View
         private void PotenciaTotal_Clicked(object sender, EventArgs e)
         {
             ViewModel.MedicaoSelecionada = "PotenciaTotal";
-        }
-
-        private void PotenciaAtiva_Clicked(object sender, EventArgs e)
-        {
-            ViewModel.MedicaoSelecionada = "PotenciaAtiva";
         }
 
         private void PotenciaReativa_Clicked(object sender, EventArgs e)
@@ -91,6 +87,11 @@ namespace MobileMarket.View
         private void dataFimControl_OkButtonClicked(object sender, Syncfusion.SfPicker.XForms.SelectionChangedEventArgs e)
         {
            ViewModel.DataFimOKClicked();
+        }
+
+        private void ExportarDados_Clicked(object sender, EventArgs e)
+        {
+            ViewModel.ExportarMedicoes();
         }
     }
 }

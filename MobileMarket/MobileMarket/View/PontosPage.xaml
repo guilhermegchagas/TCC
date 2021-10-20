@@ -30,13 +30,22 @@
                                             </StackLayout>
                                             <Image Grid.Column="1" Source="arrowdown.png" HeightRequest="10" WidthRequest="10"/>
                                         </Grid>
-                                        <StackLayout IsVisible="False">
+                                        <StackLayout IsVisible="True">
+                                            <StackLayout 
+                                                VerticalOptions="Center"
+                                                Orientation="Horizontal" 
+                                                Margin="10,5,10,0">
+                                                <Label 
+                                                Text="Código: "
+                                                TextColor="Black"/>
+                                                <Label 
+                                                Text="{Binding Codigo}"
+                                                TextColor="Black"/>
+                                            </StackLayout>
                                             <Label 
                                                 Text="{Binding Descricao}" 
                                                 IsVisible="{Binding IsDescricaoVisible}" 
-                                                Margin="10,5,10,0" 
-                                                FontAttributes="Italic" 
-                                                HorizontalOptions="Center" 
+                                                Margin="10,5,10,0"
                                                 VerticalOptions="Center"
                                                 TextColor="Black"
                                                 MaxLines="10" 

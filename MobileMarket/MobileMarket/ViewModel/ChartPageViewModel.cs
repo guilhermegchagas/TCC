@@ -1,28 +1,47 @@
 ﻿using MobileMarket.Model;
 using MobileMarket.ViewController;
+using Syncfusion.SfDataGrid.XForms;
+using Syncfusion.SfDataGrid.XForms.Exporting;
+using Syncfusion.XlsIO;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Globalization;
+using System.IO;
 using System.Text;
 using System.Threading.Tasks;
+using System.Reflection;
 using Xamarin.Forms;
 
 namespace MobileMarket.ViewModel
 {
+    public interface ISave
+    {
+        void Save(string filename, string contentType, MemoryStream stream);
+    }
+
     public class ChartPageViewModel : BaseViewModel
     {
         private bool AutoSetOk = false;
 		public Ponto ponto { get; set; }
 
-        private ObservableCollection<Medicao> _medicoes = null;
+        public SfDataGrid dataGrid { get; set; }
+
+        private ObservableCollection<Medicao> _medicoes = new ObservableCollection<Medicao> { };
         public ObservableCollection<Medicao> Medicoes
         {
             get { return _medicoes; }
             set
             {
-                _medicoes = value;
+                if(value == null)
+                {
+                    _medicoes = new ObservableCollection<Medicao> { };
+                }
+                else
+                {
+                    _medicoes = value;
+                }
                 OnPropertyChanged(nameof(Medicoes));
             }
         }
@@ -87,7 +106,7 @@ namespace MobileMarket.ViewModel
                 _dataInicio = value;
                 OnPropertyChanged(nameof(DataInicio));
                 if(AutoSetOk)
-                    UpdateMedicoes();
+                    UpdateMedicoes(true);
             }
         }
 
@@ -116,7 +135,7 @@ namespace MobileMarket.ViewModel
                 _dataFim = value;
                 OnPropertyChanged(nameof(DataFim));
                 if (AutoSetOk)
-                    UpdateMedicoes();
+                    UpdateMedicoes(true);
             }
         }
 
@@ -187,14 +206,15 @@ namespace MobileMarket.ViewModel
             {
                 Task.Run(() =>
                 {
-                    UpdateMedicoes();
+                    UpdateMedicoes(false);
                 });
                 return true;
             });
         }
 
-        private void UpdateMedicoes()
+        private void UpdateMedicoes(bool resetPosition)
         {
+            dataGrid.CanMaintainScrollPosition = !resetPosition;
             Medicoes = HTTPRequest.GetMedicoes(ponto.Codigo, DataInicio, DataFim);
         }
 
@@ -205,6 +225,19 @@ namespace MobileMarket.ViewModel
             DataFimCollection = DateTimeToCollection(Medicoes[Medicoes.Count-1].Horario);
             DataInicio = Medicoes[3].Horario;
             DataFim = Medicoes[Medicoes.Count - 1].Horario;
+        }
+
+        public void ExportarMedicoes()
+        {
+            DataGridExcelExportingController excelExport = new DataGridExcelExportingController();
+            var excelEngine = excelExport.ExportToExcel(this.dataGrid);
+            var workbook = excelEngine.Excel.Workbooks[0];
+            MemoryStream stream = new MemoryStream();
+            workbook.SaveAs(stream);
+            workbook.Close();
+            excelEngine.Dispose();
+
+            DependencyService.Get<ISave>().Save("Medicoes.xlsx", "application/msexcel", stream);
         }
     }
 }

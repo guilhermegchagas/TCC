@@ -4,6 +4,7 @@
              xmlns:d="http://xamarin.com/schemas/2014/forms/design"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:chart="clr-namespace:Syncfusion.SfChart.XForms;assembly=Syncfusion.SfChart.XForms"
+             xmlns:dataGrid="clr-namespace:Syncfusion.SfDataGrid.XForms;assembly=Syncfusion.SfDataGrid.XForms"
              xmlns:viewModel="clr-namespace:MobileMarket.ViewModel"
              xmlns:local="clr-namespace:MobileMarket.View"
              mc:Ignorable="d"
@@ -60,17 +61,16 @@
                     <ImageButton Grid.Column="3" Source="calendar_icon.png" WidthRequest="30" HeightRequest="30" BackgroundColor="Transparent" Clicked="DataFim_Clicked"/>
                 </Grid>
                 <Grid
-                     ColumnDefinitions="*, *, *, *, *, *, *"
+                     ColumnDefinitions="*, *, *, *, *, *"
                      ColumnSpacing="5"
                      HorizontalOptions="FillAndExpand"
                      Margin="5,0,5,0">
                     <Button BorderColor="Black" BorderWidth="1" Grid.Column="0" Text="S(W)" WidthRequest="30" HeightRequest="30" CornerRadius="30" Padding="1" Clicked="PotenciaTotal_Clicked"/>
-                    <Button BorderColor="Black" BorderWidth="1" Grid.Column="1" Text="P(VA)" WidthRequest="30" HeightRequest="30" CornerRadius="30" Padding="1" Clicked="PotenciaAtiva_Clicked"/>
-                    <Button BorderColor="Black" BorderWidth="1" Grid.Column="2" Text="Q(VAR)" WidthRequest="30" HeightRequest="30" CornerRadius="30" Padding="1" Clicked="PotenciaReativa_Clicked"/>
-                    <Button BorderColor="Black" BorderWidth="1" Grid.Column="3" Text="FP" WidthRequest="30" HeightRequest="30" CornerRadius="30" Padding="1" Clicked="FatorPotencia_Clicked"/>
-                    <Button BorderColor="Black" BorderWidth="1" Grid.Column="4" Text="I(A)" WidthRequest="30" HeightRequest="30" CornerRadius="30" Padding="1" Clicked="Corrente_Clicked"/>
-                    <Button BorderColor="Black" BorderWidth="1" Grid.Column="5" Text="V(V)" WidthRequest="30" HeightRequest="30" CornerRadius="30" Padding="1" Clicked="Tensao_Clicked"/>
-                    <Button BorderColor="Black" BorderWidth="1" Grid.Column="6" Text="f(Hz)" WidthRequest="30" HeightRequest="30" CornerRadius="30" Padding="1" Clicked="Frequencia_Clicked"/>
+                    <Button BorderColor="Black" BorderWidth="1" Grid.Column="1" Text="Q(VAR)" WidthRequest="30" HeightRequest="30" CornerRadius="30" Padding="1" Clicked="PotenciaReativa_Clicked"/>
+                    <Button BorderColor="Black" BorderWidth="1" Grid.Column="2" Text="FP" WidthRequest="30" HeightRequest="30" CornerRadius="30" Padding="1" Clicked="FatorPotencia_Clicked"/>
+                    <Button BorderColor="Black" BorderWidth="1" Grid.Column="3" Text="I(A)" WidthRequest="30" HeightRequest="30" CornerRadius="30" Padding="1" Clicked="Corrente_Clicked"/>
+                    <Button BorderColor="Black" BorderWidth="1" Grid.Column="4" Text="V(V)" WidthRequest="30" HeightRequest="30" CornerRadius="30" Padding="1" Clicked="Tensao_Clicked"/>
+                    <Button BorderColor="Black" BorderWidth="1" Grid.Column="5" Text="f(Hz)" WidthRequest="30" HeightRequest="30" CornerRadius="30" Padding="1" Clicked="Frequencia_Clicked"/>
                 </Grid>
                 <chart:SfChart
                         ChartPadding="5"
@@ -116,6 +116,7 @@
                         PickerMode="Dialog"
                         PickerWidth="300"
                         SelectedItem="{Binding DataInicioCollection, Mode=TwoWay}"
+                        OkButtonClicked="dataInicioControl_OkButtonClicked"
                         VerticalOptions="Center" />
                 <local:DateTimePicker
                         x:Name="dataFimControl2"
@@ -125,6 +126,7 @@
                         PickerMode="Dialog"
                         PickerWidth="300"
                         SelectedItem="{Binding DataFimCollection, Mode=TwoWay}"
+                        OkButtonClicked="dataFimControl_OkButtonClicked"
                         VerticalOptions="Center" />
                 <Grid 
                      ColumnDefinitions="4*, *, 4*, *"
@@ -147,18 +149,76 @@
                     <ImageButton Grid.Column="3" Source="calendar_icon.png" WidthRequest="30" HeightRequest="30" BackgroundColor="Transparent" Clicked="DataFim2_Clicked"/>
                 </Grid>
                 <Grid
-                     ColumnDefinitions="*, *, *, *, *, *, *"
-                     ColumnSpacing="5"
-                     HorizontalOptions="FillAndExpand"
-                     Margin="5,0,5,0">
-                    <Button BorderColor="Black" BorderWidth="1" Grid.Column="0" Text="S(W)" WidthRequest="30" HeightRequest="30" CornerRadius="30" Padding="1" Clicked="PotenciaTotal_Clicked"/>
-                    <Button BorderColor="Black" BorderWidth="1" Grid.Column="1" Text="P(VA)" WidthRequest="30" HeightRequest="30" CornerRadius="30" Padding="1" Clicked="PotenciaAtiva_Clicked"/>
-                    <Button BorderColor="Black" BorderWidth="1" Grid.Column="2" Text="Q(VAR)" WidthRequest="30" HeightRequest="30" CornerRadius="30" Padding="1" Clicked="PotenciaReativa_Clicked"/>
-                    <Button BorderColor="Black" BorderWidth="1" Grid.Column="3" Text="FP" WidthRequest="30" HeightRequest="30" CornerRadius="30" Padding="1" Clicked="FatorPotencia_Clicked"/>
-                    <Button BorderColor="Black" BorderWidth="1" Grid.Column="4" Text="I(A)" WidthRequest="30" HeightRequest="30" CornerRadius="30" Padding="1" Clicked="Corrente_Clicked"/>
-                    <Button BorderColor="Black" BorderWidth="1" Grid.Column="5" Text="V(V)" WidthRequest="30" HeightRequest="30" CornerRadius="30" Padding="1" Clicked="Tensao_Clicked"/>
-                    <Button BorderColor="Black" BorderWidth="1" Grid.Column="6" Text="f(Hz)" WidthRequest="30" HeightRequest="30" CornerRadius="30" Padding="1" Clicked="Frequencia_Clicked"/>
+                    ColumnDefinitions="*, *"
+                    Margin="10,0,10,0">
+                    <StackLayout 
+                        Grid.Column="0"
+                        VerticalOptions="Center"
+                        HorizontalOptions="Start"
+                        Orientation="Horizontal">
+                        <Label 
+                            Text="Resultados: "
+                            TextColor="White"/>
+                        <Label 
+                            Text="{Binding Medicoes.Count}"
+                            TextColor="White"/>
+                    </StackLayout>
+                    <Button
+                        Grid.Column="1"
+                        HorizontalOptions="End"
+                        HeightRequest="35"
+                        Text="Exportar Dados" 
+                        Padding="5,0,5,0" 
+                        Clicked="ExportarDados_Clicked"/>
                 </Grid>
+                <dataGrid:SfDataGrid x:Name="dataGrid" ItemsSource="{Binding Medicoes}" Margin="10" AutoGenerateColumns="False" ColumnSizer="Star">
+                    <dataGrid:SfDataGrid.Columns x:TypeArguments="syncfusion:Columns">
+                        <dataGrid:GridTextColumn HeaderText="Horário"
+                                   Padding="2"
+                                   MinimumWidth="70"
+                                   HeaderFontAttribute="Bold"
+                                   HeaderCellTextSize="10"
+                                   CellTextSize="10"
+                                   MappingName="Horario"/>
+                        <dataGrid:GridTextColumn HeaderText="Potência Total (W)"
+                                   HeaderFontAttribute="Bold"
+                                   HeaderCellTextSize="10"
+                                   CellTextSize="10"
+                                   Padding="2"
+                                   MappingName="PotenciaTotal" />
+                        <dataGrid:GridTextColumn HeaderText="Potência Reativa (VAR)"
+                                   HeaderFontAttribute="Bold"
+                                   HeaderCellTextSize="10"
+                                   CellTextSize="10"       
+                                   Padding="2"
+                                   MappingName="PotenciaReativa" />
+                        <dataGrid:GridTextColumn HeaderText="Fator de Potência"
+                                   HeaderFontAttribute="Bold"
+                                   HeaderCellTextSize="10"
+                                   CellTextSize="10"
+                                   Padding="2"
+                                   MappingName="FatorPotencia" />
+                        <dataGrid:GridTextColumn HeaderText="Corrente (A)"
+                                   HeaderFontAttribute="Bold"
+                                   HeaderCellTextSize="10"
+                                   CellTextSize="10"
+                                   Padding="2"
+                                   MappingName="Corrente" />
+                        <dataGrid:GridTextColumn HeaderText="Tensão (V)"
+                                   HeaderFontAttribute="Bold"
+                                   HeaderCellTextSize="10"
+                                   CellTextSize="10" 
+                                   Padding="2"
+                                   MappingName="Tensao" />
+                        <dataGrid:GridTextColumn HeaderText="Frequência (Hz)"
+                                   ColumnSizer="SizeToHeader"
+                                   HeaderFontAttribute="Bold"
+                                   HeaderCellTextSize="10"
+                                   CellTextSize="10"
+                                   Padding="2"
+                                   MappingName="Frequencia" />
+                    </dataGrid:SfDataGrid.Columns>
+                </dataGrid:SfDataGrid>
             </StackLayout>
         </ContentPage.Content>
     </ContentPage>
