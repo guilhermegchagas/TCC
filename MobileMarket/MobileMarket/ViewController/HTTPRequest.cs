@@ -3,6 +3,7 @@ using MobileMarket.View;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
@@ -14,7 +15,8 @@ namespace MobileMarket.ViewController
 {
     public class HTTPRequest
     {
-        private static string urlBase = "https://192.168.15.33:45455";
+        //private static string urlBase = "https://192.168.15.33:45455";
+        private static string urlBase = "https://guilherme2109300258.bateaquihost.com.br";
 
         public static LoginTokenResult GetLoginToken(string email, string senha)
         {
@@ -330,6 +332,35 @@ namespace MobileMarket.ViewController
                     {
                         DisplayConnectionError(registerPage);
                         return false;
+                    }
+                }
+            }
+        }
+
+        public static ObservableCollection<Medicao> GetMedicoes(int codigoPonto, DateTime? hi = null, DateTime? hf = null)
+        {
+            using (HttpClientHandler httpClientHandler = new HttpClientHandler())
+            {
+                httpClientHandler.ServerCertificateCustomValidationCallback = (message, cert, chain, errors) => { return true; };
+                using (HttpClient client = new HttpClient(httpClientHandler))
+                {
+                    client.BaseAddress = new Uri(urlBase);
+                    string URL = urlBase + "/api/medicao?cp=" + codigoPonto + "&hi=" + hi + "&hf=" + hf + "&pti&ptf&pai=&paf=&pri&prf&fpi&fpf&ci&cf&ti&tf&fi&ff";
+                    try
+                    {
+                        client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", ClienteInfo.Token);
+                        HttpResponseMessage response = client.GetAsync(URL).GetAwaiter().GetResult();
+                        if (response.StatusCode == HttpStatusCode.OK || response.StatusCode == HttpStatusCode.BadRequest)
+                        {
+                            string resultJSON = response.Content.ReadAsStringAsync().Result;
+                            ObservableCollection<Medicao> result = JsonConvert.DeserializeObject<ObservableCollection<Medicao>> (resultJSON);
+                            return result;
+                        }
+                        return null;
+                    }
+                    catch
+                    {
+                        return null;
                     }
                 }
             }

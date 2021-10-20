@@ -1,17 +1,31 @@
 ﻿using MobileMarket.Model;
+using MobileMarket.ViewController;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Globalization;
 using System.Text;
+using System.Threading.Tasks;
+using Xamarin.Forms;
 
 namespace MobileMarket.ViewModel
 {
     public class ChartPageViewModel : BaseViewModel
     {
+        private bool AutoSetOk = false;
 		public Ponto ponto { get; set; }
-		public ObservableCollection<Medicao> Medicoes { get; set; }
+
+        private ObservableCollection<Medicao> _medicoes = null;
+        public ObservableCollection<Medicao> Medicoes
+        {
+            get { return _medicoes; }
+            set
+            {
+                _medicoes = value;
+                OnPropertyChanged(nameof(Medicoes));
+            }
+        }
 
         private string _medicaoSelecionada = "PotenciaTotal";
         public string MedicaoSelecionada
@@ -21,8 +35,31 @@ namespace MobileMarket.ViewModel
             {
                 _medicaoSelecionada = value;
                 OnPropertyChanged(nameof(MedicaoSelecionada));
+                MedicaoSelecionadaLabel = MedicaoTexto[MedicaoSelecionada];
             }
         }
+
+        private string _medicaoSelecionadaLabel = "Potência Total";
+        public string MedicaoSelecionadaLabel
+        {
+            get { return _medicaoSelecionadaLabel; }
+            set
+            {
+                _medicaoSelecionadaLabel = value;
+                OnPropertyChanged(nameof(MedicaoSelecionadaLabel));
+            }
+        }
+
+        public Dictionary<string, string> MedicaoTexto = new Dictionary<string, string>()
+        {
+            {"PotenciaTotal", "Potência Total (W)"},
+            {"PotenciaAtiva", "Potência Ativa (VA)"},
+            {"PotenciaReativa", "Potência Reativa (VAR)"},
+            {"FatorPotencia", "Fator de Potência"},
+            {"Corrente", "Corrente (A)"},
+            {"Tensao", "Tensão (V)"},
+            {"Frequencia", "Frequência (Hz)"}
+        };
 
         #region Date Control
         private ObservableCollection<object> _dataInicioCollection;
@@ -33,8 +70,12 @@ namespace MobileMarket.ViewModel
             {
                 _dataInicioCollection = value;
                 OnPropertyChanged(nameof(DataInicioCollection));
-                DataInicio = CollectionToDateTime(value);
             }
+        }
+
+        public void DataInicioOKClicked()
+        {
+            DataInicio = CollectionToDateTime(DataInicioCollection);
         }
 
         private DateTime _dataInicio;
@@ -45,6 +86,8 @@ namespace MobileMarket.ViewModel
             {
                 _dataInicio = value;
                 OnPropertyChanged(nameof(DataInicio));
+                if(AutoSetOk)
+                    UpdateMedicoes();
             }
         }
 
@@ -56,8 +99,12 @@ namespace MobileMarket.ViewModel
             {
                 _dataFimCollection = value;
                 OnPropertyChanged(nameof(DataFimCollection));
-                DataFim = CollectionToDateTime(value);
             }
+        }
+
+        public void DataFimOKClicked()
+        {
+            DataFim = CollectionToDateTime(DataFimCollection);
         }
 
         private DateTime _dataFim;
@@ -68,6 +115,8 @@ namespace MobileMarket.ViewModel
             {
                 _dataFim = value;
                 OnPropertyChanged(nameof(DataFim));
+                if (AutoSetOk)
+                    UpdateMedicoes();
             }
         }
 
@@ -128,15 +177,34 @@ namespace MobileMarket.ViewModel
 		{
             DataInicioCollection = DateTimeToCollection(DateTime.Now.AddDays(-1));
             DataFimCollection = DateTimeToCollection(DateTime.Now);
-            Medicoes = new ObservableCollection<Medicao>();
-			for(int i = 1; i <= 10; i++)
+            Device.StartTimer(TimeSpan.FromSeconds(1), () =>
             {
-				Medicoes.Add(new Medicao(i, DateTime.Now.AddHours(i), 10 * i , 20 * i, 30 * i, 40 * i, 50* i, 60 * i, 70 * i, 37));
-			}
-			for (int i = 1; i <= 10; i++)
-			{
-				Medicoes.Add(new Medicao(i, DateTime.Now.AddDays(i), 10 * i, 20 * i, 30 * i, 40 * i, 50 * i, 60 * i, 70 * i, 37));
-            }
+                AutoSet();
+                AutoSetOk = true;
+                return false;
+            });
+            Device.StartTimer(TimeSpan.FromSeconds(10), () =>
+            {
+                Task.Run(() =>
+                {
+                    UpdateMedicoes();
+                });
+                return true;
+            });
+        }
+
+        private void UpdateMedicoes()
+        {
+            Medicoes = HTTPRequest.GetMedicoes(ponto.Codigo, DataInicio, DataFim);
+        }
+
+        public void AutoSet()
+        {
+            Medicoes = HTTPRequest.GetMedicoes(ponto.Codigo, null, null);
+            DataInicioCollection = DateTimeToCollection(Medicoes[3].Horario);
+            DataFimCollection = DateTimeToCollection(Medicoes[Medicoes.Count-1].Horario);
+            DataInicio = Medicoes[3].Horario;
+            DataFim = Medicoes[Medicoes.Count - 1].Horario;
         }
     }
 }

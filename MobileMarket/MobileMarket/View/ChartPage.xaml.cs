@@ -24,7 +24,7 @@ namespace MobileMarket.View
             InitializeComponent();
             GradiantStyles.SetContentPageGradiant(chartPage);
             GradiantStyles.SetContentPageGradiant(dataPage);
-            On<Android>().SetToolbarPlacement(ToolbarPlacement.Bottom);
+            On<Xamarin.Forms.PlatformConfiguration.Android>().SetToolbarPlacement(ToolbarPlacement.Bottom);
             ViewModel.ponto = ponto;
         }
 
@@ -36,6 +36,16 @@ namespace MobileMarket.View
         private void DataFim_Clicked(object sender, EventArgs e)
         {
             dataFimControl.IsOpen = true;
+        }
+
+        private void DataInicio2_Clicked(object sender, EventArgs e)
+        {
+            dataInicioControl2.IsOpen = true;
+        }
+
+        private void DataFim2_Clicked(object sender, EventArgs e)
+        {
+            dataFimControl2.IsOpen = true;
         }
 
         private void PotenciaTotal_Clicked(object sender, EventArgs e)
@@ -71,6 +81,16 @@ namespace MobileMarket.View
         private void Frequencia_Clicked(object sender, EventArgs e)
         {
             ViewModel.MedicaoSelecionada = "Frequencia";
+        }
+
+        private void dataInicioControl_OkButtonClicked(object sender, Syncfusion.SfPicker.XForms.SelectionChangedEventArgs e)
+        {
+            ViewModel.DataInicioOKClicked();
+        }
+
+        private void dataFimControl_OkButtonClicked(object sender, Syncfusion.SfPicker.XForms.SelectionChangedEventArgs e)
+        {
+           ViewModel.DataFimOKClicked();
         }
     }
 }
