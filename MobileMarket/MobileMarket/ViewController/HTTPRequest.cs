@@ -15,8 +15,8 @@ namespace MobileMarket.ViewController
 {
     public class HTTPRequest
     {
-        //private static string urlBase = "https://192.168.15.33:45455";
-        private static string urlBase = "https://guilherme2109300258.bateaquihost.com.br";
+        private static string urlBase = "https://192.168.15.33:45455";
+        //private static string urlBase = "https://guilherme2109300258.bateaquihost.com.br";
 
         public static LoginTokenResult GetLoginToken(string email, string senha)
         {
@@ -336,6 +336,192 @@ namespace MobileMarket.ViewController
                 }
             }
         }
+
+        #region Alarmes
+        public static List<Alarme> BuscarAlarmesPorPonto(int codigoPonto)
+        {
+            using (HttpClientHandler httpClientHandler = new HttpClientHandler())
+            {
+                httpClientHandler.ServerCertificateCustomValidationCallback = (message, cert, chain, errors) => { return true; };
+                using (HttpClient client = new HttpClient(httpClientHandler))
+                {
+                    client.BaseAddress = new Uri(urlBase);
+                    string URL = urlBase + "/api/alarme?codigoPonto=" + codigoPonto;
+                    try
+                    {
+                        client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", ClienteInfo.Token);
+                        HttpResponseMessage response = client.GetAsync(URL).GetAwaiter().GetResult();
+                        if (response.StatusCode == HttpStatusCode.OK || response.StatusCode == HttpStatusCode.BadRequest)
+                        {
+                            string resultJSON = response.Content.ReadAsStringAsync().Result;
+                            List<Alarme> result = JsonConvert.DeserializeObject<List<Alarme>>(resultJSON);
+                            return result;
+                        }
+                        return null;
+                    }
+                    catch
+                    {
+                        return null;
+                    }
+                }
+            }
+        }
+
+        public static bool PostRegisterAlarme(Page registerPage, Alarme alarme)
+        {
+            using (HttpClientHandler httpClientHandler = new HttpClientHandler())
+            {
+                httpClientHandler.ServerCertificateCustomValidationCallback = (message, cert, chain, errors) => { return true; };
+                using (HttpClient client = new HttpClient(httpClientHandler))
+                {
+                    client.BaseAddress = new Uri(urlBase);
+                    string URL = urlBase + "/api/alarme/cadastrar";
+                    FormUrlEncodedContent parametros = new FormUrlEncodedContent(new[]
+                    {
+                        new KeyValuePair<string,string>("nome",alarme.Nome),
+                        new KeyValuePair<string,string>("descricao",alarme.Descricao),
+                        new KeyValuePair<string,string>("tipoCondicao",alarme.TipoCondicao.ToString()),
+                        new KeyValuePair<string,string>("tipoMedicao",alarme.TipoMedicao.ToString()),
+                        new KeyValuePair<string,string>("codigoPonto",alarme.CodigoPonto.ToString())
+                    });
+
+                    try
+                    {
+                        client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", ClienteInfo.Token);
+                        HttpResponseMessage response = client.PostAsync(URL, parametros).GetAwaiter().GetResult();
+                        if (response.StatusCode == HttpStatusCode.Created || response.StatusCode == HttpStatusCode.BadRequest)
+                        {
+                            string result = response.Content.ReadAsStringAsync().Result;
+                            if (result == "\"Falha ao conectar com o banco.\"")
+                            {
+                                DisplayConnectionError(registerPage);
+                                return false;
+                            }
+                            if (result == "\"Alarme cadastrado.\"")
+                            {
+                                registerPage.DisplayAlert("Alarme criado", "O alarme foi criado com sucesso.", "OK");
+                                return true;
+                            }
+                            DisplayConnectionError(registerPage);
+                            return false;
+                        }
+                        else
+                        {
+                            DisplayConnectionError(registerPage);
+                            return false;
+                        }
+                    }
+                    catch
+                    {
+                        DisplayConnectionError(registerPage);
+                        return false;
+                    }
+                }
+            }
+        }
+
+        public static bool PutUpdateAlarme(Page registerPage, Alarme alarme)
+        {
+            using (HttpClientHandler httpClientHandler = new HttpClientHandler())
+            {
+                httpClientHandler.ServerCertificateCustomValidationCallback = (message, cert, chain, errors) => { return true; };
+                using (HttpClient client = new HttpClient(httpClientHandler))
+                {
+                    client.BaseAddress = new Uri(urlBase);
+                    string URL = urlBase + "/api/alarme/atualizar";
+                    FormUrlEncodedContent parametros = new FormUrlEncodedContent(new[]
+                    {
+                        new KeyValuePair<string,string>("codigoAlarme",alarme.Codigo.ToString()),
+                        new KeyValuePair<string,string>("nome",alarme.Nome),
+                        new KeyValuePair<string,string>("descricao",alarme.Descricao),
+                        new KeyValuePair<string,string>("tipoCondicao",alarme.TipoCondicao.ToString()),
+                        new KeyValuePair<string,string>("tipoMedicao",alarme.TipoMedicao.ToString())
+                    });
+
+                    try
+                    {
+                        client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", ClienteInfo.Token);
+                        HttpResponseMessage response = client.PutAsync(URL, parametros).GetAwaiter().GetResult();
+                        if (response.StatusCode == HttpStatusCode.Created || response.StatusCode == HttpStatusCode.BadRequest)
+                        {
+                            string result = response.Content.ReadAsStringAsync().Result;
+                            if (result == "\"Falha ao conectar com o banco.\"")
+                            {
+                                DisplayConnectionError(registerPage);
+                                return false;
+                            }
+                            if (result == "\"Alarme atualizado.\"")
+                            {
+                                registerPage.DisplayAlert("Alarme atualizado", "O alarme foi atualizado com sucesso.", "OK");
+                                return true;
+                            }
+                            DisplayConnectionError(registerPage);
+                            return false;
+                        }
+                        else
+                        {
+                            DisplayConnectionError(registerPage);
+                            return false;
+                        }
+                    }
+                    catch
+                    {
+                        DisplayConnectionError(registerPage);
+                        return false;
+                    }
+                }
+            }
+        }
+
+        public static bool DeleteAlarme(Page registerPage, Alarme alarme)
+        {
+            using (HttpClientHandler httpClientHandler = new HttpClientHandler())
+            {
+                httpClientHandler.ServerCertificateCustomValidationCallback = (message, cert, chain, errors) => { return true; };
+                using (HttpClient client = new HttpClient(httpClientHandler))
+                {
+                    client.BaseAddress = new Uri(urlBase);
+                    string URL = urlBase + "/api/alarme/deletar";
+                    FormUrlEncodedContent parametros = new FormUrlEncodedContent(new[]
+                    {
+                        new KeyValuePair<string,string>("codigoAlarme",alarme.Codigo.ToString()),
+                        new KeyValuePair<string,string>("codigoPonto",alarme.CodigoPonto.ToString())
+                    });
+                    try
+                    {
+                        client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", ClienteInfo.Token);
+                        HttpResponseMessage response = client.PostAsync(URL, parametros).GetAwaiter().GetResult();
+                        if (response.StatusCode == HttpStatusCode.Created || response.StatusCode == HttpStatusCode.BadRequest)
+                        {
+                            string result = response.Content.ReadAsStringAsync().Result;
+                            if (result == "\"Falha ao conectar com o banco.\"")
+                            {
+                                DisplayConnectionError(registerPage);
+                                return false;
+                            }
+                            if (result == "\"Alarme deletado.\"")
+                            {
+                                registerPage.DisplayAlert("Alarme deletado", "O alarme foi deletado com sucesso.", "OK");
+                                return true;
+                            }
+                            DisplayConnectionError(registerPage);
+                            return false;
+                        }
+                        else
+                        {
+                            DisplayConnectionError(registerPage);
+                            return false;
+                        }
+                    }
+                    catch
+                    {
+                        DisplayConnectionError(registerPage);
+                        return false;
+                    }
+                }
+            }
+        }
+        #endregion
 
         public static ObservableCollection<Medicao> GetMedicoes(int codigoPonto, DateTime? hi = null, DateTime? hf = null)
         {

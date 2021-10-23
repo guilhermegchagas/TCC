@@ -222,4 +222,58 @@
             </StackLayout>
         </ContentPage.Content>
     </ContentPage>
+    <ContentPage Title="Alarmes" IconImageSource="alarm_icon.png" x:Name="alarmPage">
+        <ContentPage.Content>
+            <StackLayout Orientation="Vertical">
+                <ScrollView x:Name="scrollView" VerticalOptions="FillAndExpand">
+                    <CollectionView x:Name="listaAlarmesControl" Margin="5">
+                        <CollectionView.ItemTemplate>
+                            <DataTemplate>
+                                <ContentView Padding="5">
+                                    <Frame HasShadow="True" BorderColor="Black" CornerRadius="10" HorizontalOptions="Fill" Padding="4">
+                                        <StackLayout Spacing="0" HorizontalOptions="FillAndExpand">
+                                            <StackLayout.GestureRecognizers>
+                                                <TapGestureRecognizer Tapped="ArrowTapped" NumberOfTapsRequired="1"/>
+                                            </StackLayout.GestureRecognizers>
+                                            <Grid
+                                            ColumnDefinitions="9*, *"
+                                            ColumnSpacing="5"
+                                            HorizontalOptions="FillAndExpand"
+                                            Margin="5">
+                                                <StackLayout Orientation="Horizontal" Grid.Column="0">
+                                                    <Image Source="alarm_icon.png" HeightRequest="30" WidthRequest="30"/>
+                                                    <Label Text="{Binding Nome}" FontAttributes="Bold" FontSize="Large" TextColor="Black"/>
+                                                </StackLayout>
+                                                <Image Grid.Column="1" Source="arrowdown.png" HeightRequest="10" WidthRequest="10"/>
+                                            </Grid>
+                                            <StackLayout IsVisible="True">
+                                                <Label 
+                                                Text="{Binding Descricao}" 
+                                                IsVisible="{Binding IsDescricaoVisible}" 
+                                                Margin="10,5,10,0"
+                                                VerticalOptions="Center"
+                                                TextColor="Black"
+                                                MaxLines="10" 
+                                                LineBreakMode="TailTruncation"/>
+                                                <Grid 
+                                                 ColumnDefinitions="*, *"
+                                                 ColumnSpacing="5"
+                                                 HorizontalOptions="FillAndExpand"
+                                                 Margin="10"
+                                                 HeightRequest="35">
+                                                    <Button Grid.Column="0" Text="Editar" Padding="2" Clicked="AlarmEditButtonClicked"/>
+                                                    <Button Grid.Column="1" Text="Apagar" Padding="2" Clicked="AlarmDeleteButtonClicked"/>
+                                                </Grid>
+                                            </StackLayout>
+                                        </StackLayout>
+                                    </Frame>
+                                </ContentView>
+                            </DataTemplate>
+                        </CollectionView.ItemTemplate>
+                    </CollectionView>
+                </ScrollView>
+                <Button Text="Criar Alarme" Margin="30,10,30,10" Clicked="CriarAlarmeButtonClicked"/>
+            </StackLayout>
+        </ContentPage.Content>
+    </ContentPage>
 </TabbedPage>

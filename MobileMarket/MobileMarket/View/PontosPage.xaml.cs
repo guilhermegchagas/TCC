@@ -101,11 +101,16 @@ namespace MobileMarket.View
             Navigation.PushAsync(new CriarPontoPage(this,ponto));
         }
 
-        private void DeleteButtonClicked(object sender, EventArgs e)
+        private async void DeleteButtonClicked(object sender, EventArgs e)
         {
             Button button = sender as Button;
             Ponto ponto = (Ponto)button.BindingContext;
-            Navigation.PushAsync(new ChartPage(ponto));
+            bool accepted = await DisplayAlert("Deletar Ponto", "Ao deletar o ponto você perderá todas as medições, é recomendado exportar os dados primeiro. Desejar prosseguir?", "SIM", "NÃO");
+            if (accepted)
+            {
+                HTTPRequest.DeletePonto(this, ponto);
+                UpdateLista();
+            }
         }
 
         private void CriarPontoButtonClicked(object sender, EventArgs e)

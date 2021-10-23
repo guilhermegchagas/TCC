@@ -39,6 +39,9 @@
     <Compile Update="View\ChartPage.xaml.cs">
       <DependentUpon>ChartPage.xaml</DependentUpon>
     </Compile>
+    <Compile Update="View\CriarAlarmePage.xaml.cs">
+      <DependentUpon>CriarAlarmePage.xaml</DependentUpon>
+    </Compile>
     <Compile Update="View\PontosPage.xaml.cs">
       <DependentUpon>PontosPage.xaml</DependentUpon>
     </Compile>
