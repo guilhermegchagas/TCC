@@ -10,6 +10,7 @@ using MobileMarket.ViewModel;
 using Xamarin.Forms.PlatformConfiguration.AndroidSpecific;
 using System.Collections.Generic;
 using MobileMarket.ViewController;
+using System.Threading.Tasks;
 
 namespace MobileMarket.View
 {
@@ -26,9 +27,21 @@ namespace MobileMarket.View
             InitializeComponent();
             GradiantStyles.SetContentPageGradiant(chartPage);
             GradiantStyles.SetContentPageGradiant(dataPage);
+            GradiantStyles.SetContentPageGradiant(alarmPage);
+            GradiantStyles.SetContentPageGradiant(notificationPage);
             On<Xamarin.Forms.PlatformConfiguration.Android>().SetToolbarPlacement(ToolbarPlacement.Bottom);
             ViewModel.ponto = ponto;
             ViewModel.dataGrid = dataGrid;
+            UpdateListaAlarmes();
+            UpdateListaNotificacao();
+            Device.StartTimer(TimeSpan.FromSeconds(10), () =>
+            {
+                Task.Run(() =>
+                {
+                    UpdateListaNotificacao();
+                });
+                return true;
+            });
         }
 
         private void DataInicio_Clicked(object sender, EventArgs e)
@@ -135,11 +148,11 @@ namespace MobileMarket.View
                 stack.Children.Add(alarmIcon);
                 stack.Children.Add(label);
 
-                scrollView.Content = stack;
+                scrollViewAlarm.Content = stack;
             }
             else
             {
-                scrollView.Content = listaAlarmesControl;
+                scrollViewAlarm.Content = listaAlarmesControl;
             }
         }
 
@@ -184,6 +197,74 @@ namespace MobileMarket.View
         private void CriarAlarmeButtonClicked(object sender, EventArgs e)
         {
             Navigation.PushAsync(new CriarAlarmePage(this));
+        }
+        #endregion
+
+        #region NotificationPage
+        List<Notificacao> listaNotificacao = null;
+
+        public void UpdateListaNotificacao()
+        {
+            try
+            {
+                listaNotificacao = HTTPRequest.BuscarNotificacaoPorPonto(ViewModel.ponto.Codigo);
+                Device.BeginInvokeOnMainThread(() => {
+                    listaNotificacaoControl.ItemsSource = listaNotificacao;
+                });
+            }
+            catch
+            {
+                listaNotificacao = null;
+            }
+            if (listaNotificacao == null)
+            {
+                StackLayout stack = new StackLayout
+                {
+                    Orientation = StackOrientation.Vertical,
+                    VerticalOptions = LayoutOptions.Center
+                };
+                Image notificationIcon = new Image
+                {
+                    Source = "notification_icon.png",
+                    HeightRequest = 100,
+                    WidthRequest = 100
+                };
+                Label label = new Label
+                {
+                    Text = "Você não possui nenhuma notificação.",
+                    HorizontalOptions = LayoutOptions.Center,
+                    VerticalOptions = LayoutOptions.Center,
+                    TextColor = Color.White,
+                    Margin = new Thickness(10, 30, 10, 30)
+                };
+
+                stack.Children.Add(notificationIcon);
+                stack.Children.Add(label);
+
+                Device.BeginInvokeOnMainThread(() => {
+                    scrollViewNotification.Content = stack;
+                });
+            }
+            else
+            {
+                Device.BeginInvokeOnMainThread(() => {
+                    scrollViewNotification.Content = listaNotificacaoControl;
+                });
+            }
+        }
+
+        private void NotificacaoDeleteButtonClicked(object sender, EventArgs e)
+        {
+            Xamarin.Forms.ImageButton button = sender as Xamarin.Forms.ImageButton;
+            Notificacao notificacao = (Notificacao)button.BindingContext;
+            HTTPRequest.DeleteNotificacao(notificacao);
+            UpdateListaNotificacao();
+        }
+
+        private void LimparNotificacoesButtonClicked(object sender, EventArgs e)
+        {
+            HTTPRequest.LimparNotificacao(ViewModel.ponto.Codigo);
+            UpdateListaNotificacao();
         }
         #endregion
     }

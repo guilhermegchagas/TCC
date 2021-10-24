@@ -293,19 +293,11 @@ namespace MobileMarket.ViewController
                 using (HttpClient client = new HttpClient(httpClientHandler))
                 {
                     client.BaseAddress = new Uri(urlBase);
-                    string URL = urlBase + "/api/ponto/deletar";
-                    FormUrlEncodedContent parametros = new FormUrlEncodedContent(new[]
-                    {
-                        new KeyValuePair<string,string>("codigo",ponto.Codigo.ToString()),
-                        new KeyValuePair<string,string>("nome",ponto.Nome),
-                        new KeyValuePair<string,string>("descricao",ponto.Descricao),
-                        new KeyValuePair<string,string>("codigoUsuario",ponto.CodigoUsuario.ToString())
-                    });
-
+                    string URL = urlBase + "/api/ponto/deletar?" + "codigoUsuario=" + ponto.CodigoUsuario + "&codigoPonto=" + ponto.Codigo;
                     try
                     {
                         client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", ClienteInfo.Token);
-                        HttpResponseMessage response = client.PostAsync(URL, parametros).GetAwaiter().GetResult();
+                        HttpResponseMessage response = client.DeleteAsync(URL).GetAwaiter().GetResult();
                         if (response.StatusCode == HttpStatusCode.Created || response.StatusCode == HttpStatusCode.BadRequest)
                         {
                             string result = response.Content.ReadAsStringAsync().Result;
@@ -382,6 +374,7 @@ namespace MobileMarket.ViewController
                         new KeyValuePair<string,string>("descricao",alarme.Descricao),
                         new KeyValuePair<string,string>("tipoCondicao",alarme.TipoCondicao.ToString()),
                         new KeyValuePair<string,string>("tipoMedicao",alarme.TipoMedicao.ToString()),
+                        new KeyValuePair<string,string>("valorCondicao",alarme.ValorCondicao.ToString()),
                         new KeyValuePair<string,string>("codigoPonto",alarme.CodigoPonto.ToString())
                     });
 
@@ -431,11 +424,13 @@ namespace MobileMarket.ViewController
                     string URL = urlBase + "/api/alarme/atualizar";
                     FormUrlEncodedContent parametros = new FormUrlEncodedContent(new[]
                     {
-                        new KeyValuePair<string,string>("codigoAlarme",alarme.Codigo.ToString()),
+                        new KeyValuePair<string,string>("codigo",alarme.Codigo.ToString()),
                         new KeyValuePair<string,string>("nome",alarme.Nome),
                         new KeyValuePair<string,string>("descricao",alarme.Descricao),
                         new KeyValuePair<string,string>("tipoCondicao",alarme.TipoCondicao.ToString()),
-                        new KeyValuePair<string,string>("tipoMedicao",alarme.TipoMedicao.ToString())
+                        new KeyValuePair<string,string>("tipoMedicao",alarme.TipoMedicao.ToString()),
+                        new KeyValuePair<string,string>("valorCondicao",alarme.ValorCondicao.ToString()),
+                        new KeyValuePair<string,string>("codigoPonto",alarme.CodigoPonto.ToString())
                     });
 
                     try
@@ -481,16 +476,11 @@ namespace MobileMarket.ViewController
                 using (HttpClient client = new HttpClient(httpClientHandler))
                 {
                     client.BaseAddress = new Uri(urlBase);
-                    string URL = urlBase + "/api/alarme/deletar";
-                    FormUrlEncodedContent parametros = new FormUrlEncodedContent(new[]
-                    {
-                        new KeyValuePair<string,string>("codigoAlarme",alarme.Codigo.ToString()),
-                        new KeyValuePair<string,string>("codigoPonto",alarme.CodigoPonto.ToString())
-                    });
+                    string URL = urlBase + "/api/alarme/deletar?" + "codigo=" + alarme.Codigo + "&codigoPonto=" + alarme.CodigoPonto;
                     try
                     {
                         client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", ClienteInfo.Token);
-                        HttpResponseMessage response = client.PostAsync(URL, parametros).GetAwaiter().GetResult();
+                        HttpResponseMessage response = client.DeleteAsync(URL).GetAwaiter().GetResult();
                         if (response.StatusCode == HttpStatusCode.Created || response.StatusCode == HttpStatusCode.BadRequest)
                         {
                             string result = response.Content.ReadAsStringAsync().Result;
@@ -516,6 +506,135 @@ namespace MobileMarket.ViewController
                     catch
                     {
                         DisplayConnectionError(registerPage);
+                        return false;
+                    }
+                }
+            }
+        }
+        #endregion
+
+        #region Notificação
+        public static List<Notificacao> BuscarNotificacaoPorPonto(int codigoPonto, DateTime? horarioInicial = null, DateTime? horarioFinal = null)
+        {
+            using (HttpClientHandler httpClientHandler = new HttpClientHandler())
+            {
+                httpClientHandler.ServerCertificateCustomValidationCallback = (message, cert, chain, errors) => { return true; };
+                using (HttpClient client = new HttpClient(httpClientHandler))
+                {
+                    client.BaseAddress = new Uri(urlBase);
+                    string URL = urlBase + "/api/notificacao?codigoPonto=" + codigoPonto + "&horarioInicial=" + horarioInicial + "&horarioFinal=" + horarioFinal;
+                    try
+                    {
+                        client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", ClienteInfo.Token);
+                        HttpResponseMessage response = client.GetAsync(URL).GetAwaiter().GetResult();
+                        if (response.StatusCode == HttpStatusCode.OK || response.StatusCode == HttpStatusCode.BadRequest)
+                        {
+                            string resultJSON = response.Content.ReadAsStringAsync().Result;
+                            List<Notificacao> result = JsonConvert.DeserializeObject<List<Notificacao>>(resultJSON);
+                            return result;
+                        }
+                        return null;
+                    }
+                    catch
+                    {
+                        return null;
+                    }
+                }
+            }
+        }
+
+        public static bool PostRegisterNotificacao(Notificacao notificacao)
+        {
+            using (HttpClientHandler httpClientHandler = new HttpClientHandler())
+            {
+                httpClientHandler.ServerCertificateCustomValidationCallback = (message, cert, chain, errors) => { return true; };
+                using (HttpClient client = new HttpClient(httpClientHandler))
+                {
+                    client.BaseAddress = new Uri(urlBase);
+                    string URL = urlBase + "/api/notificacao/cadastrar";
+                    FormUrlEncodedContent parametros = new FormUrlEncodedContent(new[]
+                    {
+                        new KeyValuePair<string,string>("nome",notificacao.Nome),
+                        new KeyValuePair<string,string>("descricao",notificacao.Descricao),
+                        new KeyValuePair<string,string>("tipo",notificacao.Tipo.ToString()),
+                        new KeyValuePair<string,string>("codigoPonto",notificacao.CodigoPonto.ToString())
+                    });
+
+                    try
+                    {
+                        client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", ClienteInfo.Token);
+                        HttpResponseMessage response = client.PostAsync(URL, parametros).GetAwaiter().GetResult();
+                        if (response.StatusCode == HttpStatusCode.Created)
+                        {
+                            return true;
+                        }
+                        else
+                        {
+                            return false;
+                        }
+                    }
+                    catch
+                    {
+                        return false;
+                    }
+                }
+            }
+        }
+
+        public static bool DeleteNotificacao(Notificacao notificacao)
+        {
+            using (HttpClientHandler httpClientHandler = new HttpClientHandler())
+            {
+                httpClientHandler.ServerCertificateCustomValidationCallback = (message, cert, chain, errors) => { return true; };
+                using (HttpClient client = new HttpClient(httpClientHandler))
+                {
+                    client.BaseAddress = new Uri(urlBase);
+                    string URL = urlBase + "/api/notificacao/deletar?codigo=" + notificacao.Codigo + "&codigoPonto=" + notificacao.CodigoPonto;
+                    try
+                    {
+                        client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", ClienteInfo.Token);
+                        HttpResponseMessage response = client.DeleteAsync(URL).GetAwaiter().GetResult();
+                        if (response.StatusCode == HttpStatusCode.Created)
+                        {
+                            return true;
+                        }
+                        else
+                        {
+                            return false;
+                        }
+                    }
+                    catch
+                    {
+                        return false;
+                    }
+                }
+            }
+        }
+
+        public static bool LimparNotificacao(int codigoPonto, DateTime? horarioInicial = null, DateTime? horarioFinal = null)
+        {
+            using (HttpClientHandler httpClientHandler = new HttpClientHandler())
+            {
+                httpClientHandler.ServerCertificateCustomValidationCallback = (message, cert, chain, errors) => { return true; };
+                using (HttpClient client = new HttpClient(httpClientHandler))
+                {
+                    client.BaseAddress = new Uri(urlBase);
+                    string URL = urlBase + "/api/notificacao/limpar?codigoPonto=" + codigoPonto + "&horarioInicial=" + horarioInicial + "&horarioFinal=" + horarioFinal;
+                    try
+                    {
+                        client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", ClienteInfo.Token);
+                        HttpResponseMessage response = client.DeleteAsync(URL).GetAwaiter().GetResult();
+                        if (response.StatusCode == HttpStatusCode.Created)
+                        {
+                            return true;
+                        }
+                        else
+                        {
+                            return false;
+                        }
+                    }
+                    catch
+                    {
                         return false;
                     }
                 }

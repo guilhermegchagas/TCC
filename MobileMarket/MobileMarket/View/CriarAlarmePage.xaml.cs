@@ -1,7 +1,9 @@
 ﻿using MobileMarket.Model;
 using MobileMarket.ViewController;
+using MobileMarket.ViewModel;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Net.Http;
 using System.Text;
@@ -17,6 +19,10 @@ namespace MobileMarket.View
         private ChartPage alarmesPage = null;
         private Alarme alarme = null;
         private bool isUpdatePage = false;
+        public CriarAlarmPageViewModel ViewModel
+        {
+            get { return (CriarAlarmPageViewModel)BindingContext; }
+        }
 
         public CriarAlarmePage(ChartPage page = null, Alarme _alarme = null)
         {
@@ -46,6 +52,9 @@ namespace MobileMarket.View
             botaoFinalizar.Text = "Atualizar Alarme";
             entry_nome.Text = alarme.Nome;
             editor_descricao.Text = alarme.Descricao;
+            ViewModel.TipoMedicaoSelecionada = alarme.TipoMedicao;
+            ViewModel.TipoCondicaoSelecionada = alarme.TipoCondicao;
+            entry_valor.Text = alarme.ValorCondicao.ToString();
         }
 
         private void FinishRegisterButtonClicked(object sender, EventArgs e)
@@ -83,6 +92,9 @@ namespace MobileMarket.View
                 Alarme alarme = this.alarme;
                 alarme.Nome = entry_nome.Text;
                 alarme.Descricao = editor_descricao.Text;
+                alarme.TipoMedicao = ViewModel.TipoMedicaoSelecionada;
+                alarme.TipoCondicao = ViewModel.TipoCondicaoSelecionada;
+                alarme.ValorCondicao = Convert.ToDouble(entry_valor.Text);
                 return alarme;
             }
             else
@@ -90,6 +102,9 @@ namespace MobileMarket.View
                 Alarme alarme = new Alarme();
                 alarme.Nome = entry_nome.Text;
                 alarme.Descricao = editor_descricao.Text;
+                alarme.TipoMedicao = ViewModel.TipoMedicaoSelecionada;
+                alarme.TipoCondicao = ViewModel.TipoCondicaoSelecionada;
+                alarme.ValorCondicao = Convert.ToDouble(entry_valor.Text);
                 alarme.CodigoPonto = Convert.ToInt32(alarmesPage.ViewModel.ponto.Codigo);
                 return alarme;
             }
@@ -98,6 +113,8 @@ namespace MobileMarket.View
         private bool IsAllFieldsOK()
         {
             if(!AssertNoEmptyEntry())
+                return false;
+            if (!AssertValorCondicaoDoubleValue())
                 return false;
             return true;
         }
@@ -109,7 +126,36 @@ namespace MobileMarket.View
                 DisplayAlert("Campo Vazio", "Preencha o campo de nome.", "OK");
                 return false;
             }
+            if (Helper.AssertEmptyPicker(picker_tipo_medicao))
+            {
+                DisplayAlert("Campo Vazio", "Selecione o tipo de medição.", "OK");
+                return false;
+            }
+            if (Helper.AssertEmptyPicker(picker_tipo_condicao))
+            {
+                DisplayAlert("Campo Vazio", "Selecione o tipo de condição.", "OK");
+                return false;
+            }
+            if (Helper.AssertEmptyEntry(entry_valor))
+            {
+                DisplayAlert("Campo Vazio", "Preencha o campo de valor da condição.", "OK");
+                return false;
+            }
             return true;
+        }
+
+        private bool AssertValorCondicaoDoubleValue()
+        {
+            try
+            {
+                double value = Convert.ToDouble(entry_valor.Text);
+                return true;
+            }
+            catch
+            {
+                DisplayAlert("Valor incorreto", "O valor deve conter apenas números.", "OK");
+                return false;
+            }
         }
     }
 }

@@ -221,10 +221,20 @@ namespace MobileMarket.ViewModel
         public void AutoSet()
         {
             Medicoes = HTTPRequest.GetMedicoes(ponto.Codigo, null, null);
-            DataInicioCollection = DateTimeToCollection(Medicoes[3].Horario);
-            DataFimCollection = DateTimeToCollection(Medicoes[Medicoes.Count-1].Horario);
-            DataInicio = Medicoes[3].Horario;
-            DataFim = Medicoes[Medicoes.Count - 1].Horario;
+            if(Medicoes != null && Medicoes.Count > 0)
+            {
+                DataInicioCollection = DateTimeToCollection(Medicoes[0].Horario);
+                DataFimCollection = DateTimeToCollection(Medicoes[Medicoes.Count - 1].Horario);
+                DataInicio = Medicoes[0].Horario;
+                DataFim = Medicoes[Medicoes.Count - 1].Horario;
+            }
+            else
+            {
+                DataInicioCollection = DateTimeToCollection(DateTime.Today);
+                DataFimCollection = DateTimeToCollection(DateTime.Now);
+                DataInicio = DateTime.Today;
+                DataFim = DateTime.Now;
+            }
         }
 
         public void ExportarMedicoes()

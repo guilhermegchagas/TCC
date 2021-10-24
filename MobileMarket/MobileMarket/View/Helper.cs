@@ -15,5 +15,14 @@ namespace MobileMarket.View
             }
             return false;
         }
+
+        public static bool AssertEmptyPicker(Picker picker)
+        {
+            if (picker.SelectedItem == null)
+            {
+                return true;
+            }
+            return false;
+        }
     }
 }

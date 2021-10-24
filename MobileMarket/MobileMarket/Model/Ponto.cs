@@ -17,5 +17,12 @@ namespace MobileMarket.Model
                 return !string.IsNullOrEmpty(Descricao);
             }
         }
+        public string TitlePonto
+        {
+            get
+            {
+                return "Ponto: " + Nome;
+            }
+        }
     }
 }

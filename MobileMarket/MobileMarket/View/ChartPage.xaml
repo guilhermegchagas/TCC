@@ -13,7 +13,7 @@
              SelectedTabColor="White"
              UnselectedTabColor="Black"
              BarTextColor="Black"
-             Title="{Binding ponto.Nome}">
+             Title="{Binding ponto.TitlePonto}">
     <TabbedPage.BindingContext>
         <viewModel:ChartPageViewModel/>
     </TabbedPage.BindingContext>
@@ -222,10 +222,10 @@
             </StackLayout>
         </ContentPage.Content>
     </ContentPage>
-    <ContentPage Title="Alarmes" IconImageSource="alarm_icon.png" x:Name="alarmPage">
+    <ContentPage Title="Alarmes" IconImageSource="alarm_icon_v2.png" x:Name="alarmPage">
         <ContentPage.Content>
             <StackLayout Orientation="Vertical">
-                <ScrollView x:Name="scrollView" VerticalOptions="FillAndExpand">
+                <ScrollView x:Name="scrollViewAlarm" VerticalOptions="FillAndExpand">
                     <CollectionView x:Name="listaAlarmesControl" Margin="5">
                         <CollectionView.ItemTemplate>
                             <DataTemplate>
@@ -247,6 +247,17 @@
                                                 <Image Grid.Column="1" Source="arrowdown.png" HeightRequest="10" WidthRequest="10"/>
                                             </Grid>
                                             <StackLayout IsVisible="True">
+                                                <StackLayout 
+                                                    VerticalOptions="Center"
+                                                    Orientation="Horizontal" 
+                                                    Margin="10,5,10,0">
+                                                    <Label 
+                                                        Text="Condição: "
+                                                        TextColor="Black"/>
+                                                    <Label 
+                                                        Text="{Binding DescricaoCondicao}"
+                                                        TextColor="Black"/>
+                                                </StackLayout>
                                                 <Label 
                                                 Text="{Binding Descricao}" 
                                                 IsVisible="{Binding IsDescricaoVisible}" 
@@ -273,6 +284,58 @@
                     </CollectionView>
                 </ScrollView>
                 <Button Text="Criar Alarme" Margin="30,10,30,10" Clicked="CriarAlarmeButtonClicked"/>
+            </StackLayout>
+        </ContentPage.Content>
+    </ContentPage>
+    <ContentPage Title="Notificações" IconImageSource="notification_icon.png" x:Name="notificationPage">
+        <ContentPage.Content>
+            <StackLayout Orientation="Vertical">
+                <ScrollView x:Name="scrollViewNotification" VerticalOptions="FillAndExpand">
+                    <CollectionView x:Name="listaNotificacaoControl" Margin="5">
+                        <CollectionView.ItemTemplate>
+                            <DataTemplate>
+                                <ContentView Padding="5">
+                                    <Frame HasShadow="True" BorderColor="Black" CornerRadius="10" HorizontalOptions="Fill" Padding="4">
+                                        <StackLayout Spacing="0" HorizontalOptions="FillAndExpand">
+                                            <Grid
+                                            ColumnDefinitions="16*, *"
+                                            ColumnSpacing="5"
+                                            HorizontalOptions="FillAndExpand"
+                                            Margin="5">
+                                                <StackLayout Orientation="Horizontal" Grid.Column="0">
+                                                    <Image Source="notification_icon.png" HeightRequest="30" WidthRequest="30"/>
+                                                    <Label Text="{Binding Nome}" FontAttributes="Bold" FontSize="Large" TextColor="Black"/>
+                                                </StackLayout>
+                                                <ImageButton Grid.Column="1" Source="close_icon.png" HeightRequest="10" WidthRequest="10" BackgroundColor="Transparent" Clicked="NotificacaoDeleteButtonClicked"/>
+                                            </Grid>
+                                            <StackLayout>
+                                                <StackLayout 
+                                                    VerticalOptions="Center"
+                                                    Orientation="Horizontal" 
+                                                    Margin="10,5,10,0">
+                                                    <Label 
+                                                        Text="Horário: "
+                                                        TextColor="Black"/>
+                                                    <Label 
+                                                        Text="{Binding Horario}"
+                                                        TextColor="Black"/>
+                                                </StackLayout>
+                                                <Label 
+                                                Text="{Binding Descricao}"
+                                                Margin="10,5,10,5"
+                                                VerticalOptions="Center"
+                                                TextColor="Black"
+                                                MaxLines="10" 
+                                                LineBreakMode="TailTruncation"/>
+                                            </StackLayout>
+                                        </StackLayout>
+                                    </Frame>
+                                </ContentView>
+                            </DataTemplate>
+                        </CollectionView.ItemTemplate>
+                    </CollectionView>
+                </ScrollView>
+                <Button Text="Limpar Notificações" Margin="30,10,30,10" Clicked="LimparNotificacoesButtonClicked"/>
             </StackLayout>
         </ContentPage.Content>
     </ContentPage>

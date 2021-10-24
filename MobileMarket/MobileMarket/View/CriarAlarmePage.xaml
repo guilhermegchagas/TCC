@@ -4,9 +4,19 @@
              xmlns:d="http://xamarin.com/schemas/2014/forms/design"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:behaviorPack="clr-namespace:Xamarin.Forms.BehaviorValidationPack;assembly=Xamarin.Forms.BehaviorValidationPack"
+             xmlns:converter="clr-namespace:MobileMarket.Converter" 
+             xmlns:viewModel="clr-namespace:MobileMarket.ViewModel"
              mc:Ignorable="d"
              x:Class="MobileMarket.View.CriarAlarmePage"
              Title="Criar Alarme">
+    <ContentPage.BindingContext>
+        <viewModel:CriarAlarmPageViewModel/>
+    </ContentPage.BindingContext>
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <converter:EnumConverter x:Key="EnumConverter"/>
+        </ResourceDictionary>
+    </ContentPage.Resources>
     <ContentPage.Content>
         <Grid RowSpacing="0" ColumnSpacing="0" Margin="0">
             <Grid.ColumnDefinitions>
@@ -20,7 +30,13 @@
                 <RowDefinition Height="4*" />
                 <RowDefinition Height="8*" />
                 <RowDefinition Height="4*" />
-                <RowDefinition Height="32*" />
+                <RowDefinition Height="24*" />
+                <RowDefinition Height="4*" />
+                <RowDefinition Height="8*" />
+                <RowDefinition Height="4*" />
+                <RowDefinition Height="8*" />
+                <RowDefinition Height="4*" />
+                <RowDefinition Height="8*" />
                 <RowDefinition Height="7*" />
                 <RowDefinition Height="10*" />
                 <RowDefinition Height="7*" />
@@ -31,7 +47,15 @@
             <Frame Grid.Row="3" Grid.Column="1" Grid.ColumnSpan="3" BorderColor="White" HasShadow="False" Padding="0" Margin="10,0,10,0" BackgroundColor="Transparent">
                 <Editor x:Name="editor_descricao" BackgroundColor="Transparent"/>
             </Frame>
-            <Button x:Name="botaoFinalizar"  Grid.Row="5" Grid.Column="2" Margin="30,0,30,0" Clicked="FinishRegisterButtonClicked"/>
+            <Label Grid.Row="4" Grid.Column="1" Grid.ColumnSpan="3" Margin="10,0,10,0" Text="Tipo Medição" VerticalTextAlignment="End" HorizontalTextAlignment="Start"/>
+            <Picker Grid.Row="5" Grid.Column="1" Grid.ColumnSpan="3" Margin="10,0,10,0" Title="Selecione um tipo de medição" x:Name="picker_tipo_medicao" ItemsSource="{Binding TiposMedicao}"
+                    TextColor="White" TitleColor="White" ItemDisplayBinding="{Binding ., Converter={StaticResource EnumConverter}}" SelectedItem="{Binding TipoMedicaoSelecionada}"/>
+            <Label Grid.Row="6" Grid.Column="1" Grid.ColumnSpan="3" Margin="10,0,10,0" Text="Tipo Condição" VerticalTextAlignment="End" HorizontalTextAlignment="Start"/>
+            <Picker Grid.Row="7" Grid.Column="1" Grid.ColumnSpan="3" Margin="10,0,10,0" Title="Selecione um tipo de condição" x:Name="picker_tipo_condicao" ItemsSource="{Binding TiposCondicao}"
+                    TextColor="White" TitleColor="White" ItemDisplayBinding="{Binding ., Converter={StaticResource EnumConverter}}" SelectedItem="{Binding TipoCondicaoSelecionada}"/>
+            <Label Grid.Row="8" Grid.Column="1" Grid.ColumnSpan="3" Margin="10,0,10,0" Text="Valor Condição" VerticalTextAlignment="End" HorizontalTextAlignment="Start"/>
+            <Entry Grid.Row="9" x:Name="entry_valor"  Grid.Column="1" Grid.ColumnSpan="3" Margin="10,0,10,0" Keyboard="Numeric"/>
+            <Button x:Name="botaoFinalizar"  Grid.Row="11" Grid.Column="2" Margin="30,0,30,0" Clicked="FinishRegisterButtonClicked"/>
         </Grid>
     </ContentPage.Content>
 </ContentPage>
