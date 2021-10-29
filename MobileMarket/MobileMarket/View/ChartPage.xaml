@@ -13,7 +13,7 @@
              SelectedTabColor="White"
              UnselectedTabColor="Black"
              BarTextColor="Black"
-             Title="{Binding ponto.TitlePonto}">
+             Title="{Binding Ponto.TitlePonto}">
     <TabbedPage.BindingContext>
         <viewModel:ChartPageViewModel/>
     </TabbedPage.BindingContext>
@@ -42,19 +42,21 @@
                         VerticalOptions="Center" />
                 <Grid 
                      ColumnDefinitions="4*, *, 4*, *"
+                     Padding="0"
+                     HeightRequest="45"
                      ColumnSpacing="10"
                      Margin="5,5,5,10"
                      HorizontalOptions="FillAndExpand">
                     <Frame Grid.Column="0" BorderColor="Black" Padding="2">
                         <StackLayout Orientation="Vertical" Spacing="1">
-                            <Label Text="{Binding DataInicio.Date, StringFormat='{0:MMMM dd, yyyy}'}" TextColor="Black"/>
+                            <Label Text="{Binding DataInicio.Date, StringFormat='{0:dd \\de MMMM, yyyy}'}" TextColor="Black"/>
                             <Label Text="{Binding DataInicio.TimeOfDay, StringFormat='{}{0:hh\\:mm}'}" TextColor="Black"/>
                         </StackLayout>
                     </Frame>
                     <ImageButton Grid.Column="1" Source="calendar_icon.png" WidthRequest="30" HeightRequest="30" BackgroundColor="Transparent" Clicked="DataInicio_Clicked"/>
                     <Frame Grid.Column="2" BorderColor="Black" Padding="2">
                         <StackLayout Orientation="Vertical" Spacing="1">
-                            <Label Text="{Binding DataFim.Date, StringFormat='{0:MMMM dd, yyyy}'}" TextColor="Black"/>
+                            <Label Text="{Binding DataFim.Date, StringFormat='{0:dd \\de MMMM, yyyy}'}" TextColor="Black"/>
                             <Label Text="{Binding DataFim.TimeOfDay, StringFormat='{}{0:hh\\:mm}'}" TextColor="Black"/>
                         </StackLayout>
                     </Frame>
@@ -72,42 +74,63 @@
                     <Button BorderColor="Black" BorderWidth="1" Grid.Column="4" Text="V(V)" WidthRequest="30" HeightRequest="30" CornerRadius="30" Padding="1" Clicked="Tensao_Clicked"/>
                     <Button BorderColor="Black" BorderWidth="1" Grid.Column="5" Text="f(Hz)" WidthRequest="30" HeightRequest="30" CornerRadius="30" Padding="1" Clicked="Frequencia_Clicked"/>
                 </Grid>
-                <chart:SfChart
+                <AbsoluteLayout HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
+                    <chart:SfChart
                         ChartPadding="5"
-                        Margin="10"
-                        HorizontalOptions="FillAndExpand"
-                        VerticalOptions="FillAndExpand">
-                    <chart:SfChart.Title>
-                        <chart:ChartTitle Text="{Binding MedicaoSelecionadaLabel}" TextColor="Black" FontSize="14" FontAttributes="Bold"/>
-                    </chart:SfChart.Title>
-                    <chart:SfChart.PrimaryAxis>
-                        <chart:DateTimeAxis Minimum="{Binding DataInicio}" Maximum="{Binding DataFim}">
-                            <chart:DateTimeAxis.Title>
-                                <chart:ChartAxisTitle Text="Horário" TextColor="Black" FontSize="12" FontAttributes="Bold"/>
-                            </chart:DateTimeAxis.Title>
-                        </chart:DateTimeAxis>
-                    </chart:SfChart.PrimaryAxis>
-                    <chart:SfChart.SecondaryAxis>
-                        <chart:NumericalAxis>
-                            <chart:NumericalAxis.Title>
-                                <chart:ChartAxisTitle Text="{Binding MedicaoSelecionadaLabel}" TextColor="Black" FontSize="12" FontAttributes="Bold"/>
-                            </chart:NumericalAxis.Title>
-                        </chart:NumericalAxis>
-                    </chart:SfChart.SecondaryAxis>
-                    <chart:SfChart.Series>
-                        <chart:FastLineSeries 
+                        Margin="10">
+                        <chart:SfChart.Title>
+                            <chart:ChartTitle Text="{Binding MedicaoSelecionadaLabel}" TextColor="Black" FontSize="14" FontAttributes="Bold"/>
+                        </chart:SfChart.Title>
+                        <chart:SfChart.PrimaryAxis>
+                            <chart:DateTimeAxis Minimum="{Binding DataInicio}" Maximum="{Binding DataFim}">
+                                <chart:DateTimeAxis.Title>
+                                    <chart:ChartAxisTitle Text="Horário" TextColor="Black" FontSize="12" FontAttributes="Bold"/>
+                                </chart:DateTimeAxis.Title>
+                            </chart:DateTimeAxis>
+                        </chart:SfChart.PrimaryAxis>
+                        <chart:SfChart.SecondaryAxis>
+                            <chart:NumericalAxis>
+                                <chart:NumericalAxis.Title>
+                                    <chart:ChartAxisTitle Text="{Binding MedicaoSelecionadaLabel}" TextColor="Black" FontSize="12" FontAttributes="Bold"/>
+                                </chart:NumericalAxis.Title>
+                            </chart:NumericalAxis>
+                        </chart:SfChart.SecondaryAxis>
+                        <chart:SfChart.Series>
+                            <chart:FastLineSeries 
                             x:Name="chartSeries"
-                            ItemsSource="{Binding Medicoes}"
+                            ItemsSource="{Binding MedicoesDisplay}"
                             XBindingPath="Horario"
 	 					    YBindingPath="{Binding MedicaoSelecionada}"/>
-                    </chart:SfChart.Series>
-                </chart:SfChart>
+                        </chart:SfChart.Series>
+                    </chart:SfChart>
+                    <ImageButton 
+                        Source="compressed_icon.png" 
+                        CornerRadius="25" 
+                        BackgroundColor="#ffcc00"
+                        Padding="5"
+                        AbsoluteLayout.LayoutBounds="0.85,0.04,25,25" 
+                        AbsoluteLayout.LayoutFlags="PositionProportional"
+                        Clicked="CompressButton_Clicked"/>
+                    <ImageButton 
+                        Source="expand_icon.png" 
+                        CornerRadius="25" 
+                        BackgroundColor="#ffcc00"
+                        Padding="5"
+                        AbsoluteLayout.LayoutBounds="0.95,0.04,25,25" 
+                        AbsoluteLayout.LayoutFlags="PositionProportional"
+                        Clicked="ExpandButton_Clicked"/>
+                </AbsoluteLayout>
             </StackLayout>
         </ContentPage.Content>
     </ContentPage>
     <ContentPage Title="Dados" IconImageSource="table_icon.png" x:Name="dataPage">
         <ContentPage.Content>
-            <StackLayout Orientation="Vertical">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="60"/>
+                    <RowDefinition Height="40"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
                 <local:DateTimePicker
                         x:Name="dataInicioControl2"
                         ColumnHeaderHeight="40"
@@ -128,27 +151,29 @@
                         SelectedItem="{Binding DataFimCollection, Mode=TwoWay}"
                         OkButtonClicked="dataFimControl_OkButtonClicked"
                         VerticalOptions="Center" />
-                <Grid 
+                <Grid
+                     Grid.Row="0"
                      ColumnDefinitions="4*, *, 4*, *"
                      ColumnSpacing="10"
                      Margin="5,5,5,10"
                      HorizontalOptions="FillAndExpand">
                     <Frame Grid.Column="0" BorderColor="Black" Padding="2">
                         <StackLayout Orientation="Vertical" Spacing="1">
-                            <Label Text="{Binding DataInicio.Date, StringFormat='{0:MMMM dd, yyyy}'}" TextColor="Black"/>
+                            <Label Text="{Binding DataInicio.Date, StringFormat='{0:dd \\de MMMM, yyyy}'}" TextColor="Black"/>
                             <Label Text="{Binding DataInicio.TimeOfDay, StringFormat='{}{0:hh\\:mm}'}" TextColor="Black"/>
                         </StackLayout>
                     </Frame>
                     <ImageButton Grid.Column="1" Source="calendar_icon.png" WidthRequest="30" HeightRequest="30" BackgroundColor="Transparent" Clicked="DataInicio2_Clicked"/>
                     <Frame Grid.Column="2" BorderColor="Black" Padding="2">
                         <StackLayout Orientation="Vertical" Spacing="1">
-                            <Label Text="{Binding DataFim.Date, StringFormat='{0:MMMM dd, yyyy}'}" TextColor="Black"/>
+                            <Label Text="{Binding DataFim.Date, StringFormat='{0:dd \\de MMMM, yyyy}'}" TextColor="Black"/>
                             <Label Text="{Binding DataFim.TimeOfDay, StringFormat='{}{0:hh\\:mm}'}" TextColor="Black"/>
                         </StackLayout>
                     </Frame>
                     <ImageButton Grid.Column="3" Source="calendar_icon.png" WidthRequest="30" HeightRequest="30" BackgroundColor="Transparent" Clicked="DataFim2_Clicked"/>
                 </Grid>
                 <Grid
+                    Grid.Row="1"
                     ColumnDefinitions="*, *"
                     Margin="10,0,10,0">
                     <StackLayout 
@@ -171,7 +196,7 @@
                         Padding="5,0,5,0" 
                         Clicked="ExportarDados_Clicked"/>
                 </Grid>
-                <dataGrid:SfDataGrid x:Name="dataGrid" ItemsSource="{Binding Medicoes}" Margin="10" AutoGenerateColumns="False" ColumnSizer="Star">
+                <dataGrid:SfDataGrid x:Name="dataGrid" ItemsSource="{Binding Medicoes}" Margin="10" AutoGenerateColumns="False" ColumnSizer="Star" Grid.Row="2">
                     <dataGrid:SfDataGrid.Columns x:TypeArguments="syncfusion:Columns">
                         <dataGrid:GridTextColumn HeaderText="Horário"
                                    Padding="2"
@@ -219,7 +244,106 @@
                                    MappingName="Frequencia" />
                     </dataGrid:SfDataGrid.Columns>
                 </dataGrid:SfDataGrid>
-            </StackLayout>
+            </Grid>
+        </ContentPage.Content>
+    </ContentPage>
+    <ContentPage Title="Estatísticas" IconImageSource="estatistica_icon.png" x:Name="statsPage">
+        <ContentPage.Content>
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="60"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="60"/>
+                    <RowDefinition Height="60"/>
+                </Grid.RowDefinitions>
+                <local:DateTimePicker
+                        x:Name="dataInicioControl3"
+                        ColumnHeaderHeight="40"
+                        HorizontalOptions="Start"
+                        PickerHeight="400"
+                        PickerMode="Dialog"
+                        PickerWidth="300"
+                        SelectedItem="{Binding DataInicioCollection, Mode=TwoWay}"
+                        OkButtonClicked="dataInicioControl_OkButtonClicked"
+                        VerticalOptions="Center" />
+                <local:DateTimePicker
+                        x:Name="dataFimControl3"
+                        ColumnHeaderHeight="40"
+                        HorizontalOptions="Start"
+                        PickerHeight="400"
+                        PickerMode="Dialog"
+                        PickerWidth="300"
+                        SelectedItem="{Binding DataFimCollection, Mode=TwoWay}"
+                        OkButtonClicked="dataFimControl_OkButtonClicked"
+                        VerticalOptions="Center" />
+                <Grid
+                     Grid.Row="0"
+                     ColumnDefinitions="4*, *, 4*, *"
+                     ColumnSpacing="10"
+                     Margin="5,5,5,10"
+                     HorizontalOptions="FillAndExpand">
+                    <Frame Grid.Column="0" BorderColor="Black" Padding="2">
+                        <StackLayout Orientation="Vertical" Spacing="1">
+                            <Label Text="{Binding DataInicio.Date, StringFormat='{0:dd \\de MMMM, yyyy}'}" TextColor="Black"/>
+                            <Label Text="{Binding DataInicio.TimeOfDay, StringFormat='{}{0:hh\\:mm}'}" TextColor="Black"/>
+                        </StackLayout>
+                    </Frame>
+                    <ImageButton Grid.Column="1" Source="calendar_icon.png" WidthRequest="30" HeightRequest="30" BackgroundColor="Transparent" Clicked="DataInicio3_Clicked"/>
+                    <Frame Grid.Column="2" BorderColor="Black" Padding="2">
+                        <StackLayout Orientation="Vertical" Spacing="1">
+                            <Label Text="{Binding DataFim.Date, StringFormat='{0:dd \\de MMMM, yyyy}'}" TextColor="Black"/>
+                            <Label Text="{Binding DataFim.TimeOfDay, StringFormat='{}{0:hh\\:mm}'}" TextColor="Black"/>
+                        </StackLayout>
+                    </Frame>
+                    <ImageButton Grid.Column="3" Source="calendar_icon.png" WidthRequest="30" HeightRequest="30" BackgroundColor="Transparent" Clicked="DataFim3_Clicked"/>
+                </Grid>
+                <Frame Grid.Row="1" BackgroundColor="Transparent" BorderColor="#ffcc00" Margin="5">
+                    <Grid
+                     RowDefinitions="*, *, *, *, *, *"
+                     ColumnDefinitions="120, *"
+                     HorizontalOptions="FillAndExpand">
+                        <Label Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" Text="MÉDIAS"/>
+                        <Label Grid.Row="1" Grid.Column="0" Text="Potência Total: "/>
+                        <Label Grid.Row="2" Grid.Column="0" Text="Potência Reativa: "/>
+                        <Label Grid.Row="3" Grid.Column="0" Text="Fator de Potência: "/>
+                        <Label Grid.Row="4" Grid.Column="0" Text="Corrente: "/>
+                        <Label Grid.Row="5" Grid.Column="0" Text="Tensão: "/>
+                        <Label Grid.Row="6" Grid.Column="0" Text="Frequência: "/>
+                        <StackLayout Orientation="Horizontal" Grid.Row="1" Grid.Column="1">
+                            <Label Text="{Binding MediaPotenciaTotal, StringFormat='{0:F2}'}"/>
+                            <Label Text="W"/>
+                        </StackLayout>
+                        <StackLayout Orientation="Horizontal" Grid.Row="2" Grid.Column="1">
+                            <Label Text="{Binding MediaPotenciaReativa, StringFormat='{0:F2}'}"/>
+                            <Label Text="VAR"/>
+                        </StackLayout>
+                        <StackLayout Orientation="Horizontal" Grid.Row="3" Grid.Column="1">
+                            <Label Text="{Binding MediaFatorPotencia, StringFormat='{0:F2}'}"/>
+                        </StackLayout>
+                        <StackLayout Orientation="Horizontal" Grid.Row="4" Grid.Column="1">
+                            <Label Text="{Binding MediaCorrente, StringFormat='{0:F2}'}"/>
+                            <Label Text="A"/>
+                        </StackLayout>
+                        <StackLayout Orientation="Horizontal" Grid.Row="5" Grid.Column="1">
+                            <Label Text="{Binding MediaTensao, StringFormat='{0:F2}'}"/>
+                            <Label Text="V"/>
+                        </StackLayout>
+                        <StackLayout Orientation="Horizontal" Grid.Row="6" Grid.Column="1">
+                            <Label Text="{Binding MediaFrequencia, StringFormat='{0:F2}'}"/>
+                            <Label Text="Hz"/>
+                        </StackLayout>
+                    </Grid>
+                </Frame>
+                <StackLayout Orientation="Horizontal" Grid.Row="2" Margin="5,0,0,0">
+                    <Label Text="Preço kWh (R$): " WidthRequest="120" VerticalOptions="Center"/>
+                    <Entry Text="{Binding PrecoKWH, Mode=TwoWay}" WidthRequest="120" VerticalOptions="Center" Keyboard="Numeric" Completed="PrecoKWH_Completed"/>
+                </StackLayout>
+                <StackLayout Orientation="Horizontal" Grid.Row="3" Margin="5,0,0,0">
+                    <Label Text="Preço do período: " WidthRequest="120"/>
+                    <Label Text="R$ " TextColor="LightGreen"/>
+                    <Label Text="{Binding PrecoFinal, StringFormat='{0:F2}'}" TextColor="LightGreen"/>
+                </StackLayout>
+            </Grid>
         </ContentPage.Content>
     </ContentPage>
     <ContentPage Title="Alarmes" IconImageSource="alarm_icon_v2.png" x:Name="alarmPage">
@@ -303,7 +427,7 @@
                                             HorizontalOptions="FillAndExpand"
                                             Margin="5">
                                                 <StackLayout Orientation="Horizontal" Grid.Column="0">
-                                                    <Image Source="notification_icon.png" HeightRequest="30" WidthRequest="30"/>
+                                                    <Image Source="{Binding IconPath}" HeightRequest="30" WidthRequest="30"/>
                                                     <Label Text="{Binding Nome}" FontAttributes="Bold" FontSize="Large" TextColor="Black"/>
                                                 </StackLayout>
                                                 <ImageButton Grid.Column="1" Source="close_icon.png" HeightRequest="10" WidthRequest="10" BackgroundColor="Transparent" Clicked="NotificacaoDeleteButtonClicked"/>
@@ -317,7 +441,7 @@
                                                         Text="Horário: "
                                                         TextColor="Black"/>
                                                     <Label 
-                                                        Text="{Binding Horario}"
+                                                        Text="{Binding Horario, StringFormat='{0:dd/MM/yyyy hh\\:mm\\:ss tt}'}"
                                                         TextColor="Black"/>
                                                 </StackLayout>
                                                 <Label 

@@ -20,5 +20,21 @@ namespace MobileMarket.Model
         public TipoNotificacao Tipo { get; set; }
         public DateTime Horario { get; set; }
         public int CodigoPonto { get; set; }
+
+        public string IconPath
+        {
+            get
+            {
+                switch(Tipo)
+                {
+                    case TipoNotificacao.AlertaAtivo:
+                        return "alarm_icon_v2.png";
+                    case TipoNotificacao.AlertaInativo:
+                        return "notification_icon.png";
+                    default:
+                        return "notification_icon.png";
+                }
+            }
+        }
     }
 }

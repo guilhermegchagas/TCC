@@ -105,7 +105,7 @@ namespace MobileMarket.View
                 alarme.TipoMedicao = ViewModel.TipoMedicaoSelecionada;
                 alarme.TipoCondicao = ViewModel.TipoCondicaoSelecionada;
                 alarme.ValorCondicao = Convert.ToDouble(entry_valor.Text);
-                alarme.CodigoPonto = Convert.ToInt32(alarmesPage.ViewModel.ponto.Codigo);
+                alarme.CodigoPonto = Convert.ToInt32(alarmesPage.ViewModel.Ponto.Codigo);
                 return alarme;
             }
         }

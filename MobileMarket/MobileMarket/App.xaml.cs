@@ -2,6 +2,7 @@
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 using MobileMarket.View;
+using System.Globalization;
 
 namespace MobileMarket
 {
@@ -13,7 +14,8 @@ namespace MobileMarket
         public App()
         {
             InitializeComponent();
-
+            CultureInfo BRCulture = new CultureInfo("pt-BR");
+            CultureInfo.DefaultThreadCurrentCulture = BRCulture;
             MainPage = new NavigationPage(new LoginPage());
         }
 

@@ -27,10 +27,11 @@ namespace MobileMarket.View
             InitializeComponent();
             GradiantStyles.SetContentPageGradiant(chartPage);
             GradiantStyles.SetContentPageGradiant(dataPage);
+            GradiantStyles.SetContentPageGradiant(statsPage);
             GradiantStyles.SetContentPageGradiant(alarmPage);
             GradiantStyles.SetContentPageGradiant(notificationPage);
             On<Xamarin.Forms.PlatformConfiguration.Android>().SetToolbarPlacement(ToolbarPlacement.Bottom);
-            ViewModel.ponto = ponto;
+            ViewModel.Ponto = ponto;
             ViewModel.dataGrid = dataGrid;
             UpdateListaAlarmes();
             UpdateListaNotificacao();
@@ -62,6 +63,16 @@ namespace MobileMarket.View
         private void DataFim2_Clicked(object sender, EventArgs e)
         {
             dataFimControl2.IsOpen = true;
+        }
+
+        private void DataInicio3_Clicked(object sender, EventArgs e)
+        {
+            dataInicioControl3.IsOpen = true;
+        }
+
+        private void DataFim3_Clicked(object sender, EventArgs e)
+        {
+            dataFimControl3.IsOpen = true;
         }
 
         private void PotenciaTotal_Clicked(object sender, EventArgs e)
@@ -116,7 +127,7 @@ namespace MobileMarket.View
         {
             try
             {
-                listaAlarmes = HTTPRequest.BuscarAlarmesPorPonto(ViewModel.ponto.Codigo);
+                listaAlarmes = HTTPRequest.BuscarAlarmesPorPonto(ViewModel.Ponto.Codigo);
                 listaAlarmesControl.ItemsSource = listaAlarmes;
             }
             catch
@@ -207,7 +218,7 @@ namespace MobileMarket.View
         {
             try
             {
-                listaNotificacao = HTTPRequest.BuscarNotificacaoPorPonto(ViewModel.ponto.Codigo);
+                listaNotificacao = HTTPRequest.BuscarNotificacaoPorPonto(ViewModel.Ponto.Codigo);
                 Device.BeginInvokeOnMainThread(() => {
                     listaNotificacaoControl.ItemsSource = listaNotificacao;
                 });
@@ -263,9 +274,28 @@ namespace MobileMarket.View
 
         private void LimparNotificacoesButtonClicked(object sender, EventArgs e)
         {
-            HTTPRequest.LimparNotificacao(ViewModel.ponto.Codigo);
+            HTTPRequest.LimparNotificacao(ViewModel.Ponto.Codigo);
             UpdateListaNotificacao();
         }
         #endregion
+
+        private void PrecoKWH_Completed(object sender, EventArgs e)
+        {
+            if(ViewModel.PrecoKWH != ViewModel.Ponto.PrecoKWH)
+            {
+                ViewModel.Ponto.PrecoKWH = ViewModel.PrecoKWH;
+                HTTPRequest.PutUpdateKWH(ViewModel.Ponto);
+            }
+        }
+
+        private void CompressButton_Clicked(object sender, EventArgs e)
+        {
+            ViewModel.UsarMedicaoComprimida = true;
+        }
+
+        private void ExpandButton_Clicked(object sender, EventArgs e)
+        {
+            ViewModel.UsarMedicaoComprimida = false;
+        }
     }
 }

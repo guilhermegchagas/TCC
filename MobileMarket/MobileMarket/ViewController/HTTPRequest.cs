@@ -15,8 +15,11 @@ namespace MobileMarket.ViewController
 {
     public class HTTPRequest
     {
-        private static string urlBase = "https://192.168.15.33:45455";
-        //private static string urlBase = "https://guilherme2109300258.bateaquihost.com.br";
+        #if DEBUG
+            private static string urlBase = "https://192.168.15.33:45455";
+        #else
+            private static string urlBase = "https://guilherme2109300258.bateaquihost.com.br";
+        #endif
 
         public static LoginTokenResult GetLoginToken(string email, string senha)
         {
@@ -279,6 +282,52 @@ namespace MobileMarket.ViewController
                     catch
                     {
                         DisplayConnectionError(registerPage);
+                        return false;
+                    }
+                }
+            }
+        }
+
+        public static bool PutUpdateKWH(Ponto ponto)
+        {
+            using (HttpClientHandler httpClientHandler = new HttpClientHandler())
+            {
+                httpClientHandler.ServerCertificateCustomValidationCallback = (message, cert, chain, errors) => { return true; };
+                using (HttpClient client = new HttpClient(httpClientHandler))
+                {
+                    client.BaseAddress = new Uri(urlBase);
+                    string URL = urlBase + "/api/ponto/atualizarKWH";
+                    FormUrlEncodedContent parametros = new FormUrlEncodedContent(new[]
+                    {
+                        new KeyValuePair<string,string>("codigo",ponto.Codigo.ToString()),
+                        new KeyValuePair<string,string>("precoKWH",ponto.PrecoKWH.ToString()),
+                        new KeyValuePair<string,string>("codigoUsuario",ponto.CodigoUsuario.ToString())
+                    });
+
+                    try
+                    {
+                        client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", ClienteInfo.Token);
+                        HttpResponseMessage response = client.PutAsync(URL, parametros).GetAwaiter().GetResult();
+                        if (response.StatusCode == HttpStatusCode.Created || response.StatusCode == HttpStatusCode.BadRequest)
+                        {
+                            string result = response.Content.ReadAsStringAsync().Result;
+                            if (result == "\"Falha ao conectar com o banco.\"")
+                            {
+                                return false;
+                            }
+                            if (result == "\"Ponto atualizado.\"")
+                            {
+                                return true;
+                            }
+                            return false;
+                        }
+                        else
+                        {
+                            return false;
+                        }
+                    }
+                    catch
+                    {
                         return false;
                     }
                 }

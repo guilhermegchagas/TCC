@@ -13,6 +13,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Reflection;
 using Xamarin.Forms;
+using System.Linq;
 
 namespace MobileMarket.ViewModel
 {
@@ -24,7 +25,35 @@ namespace MobileMarket.ViewModel
     public class ChartPageViewModel : BaseViewModel
     {
         private bool AutoSetOk = false;
-		public Ponto ponto { get; set; }
+
+        private int _numeroPontos = 100;
+
+        private bool _usarMedicaoComprimida = true;
+        public bool UsarMedicaoComprimida 
+        {
+            get { return _usarMedicaoComprimida; }
+            set
+            {
+                if(_usarMedicaoComprimida != value)
+                {
+                    _usarMedicaoComprimida = value;
+                    SetMedicaoDisplay();
+                    OnPropertyChanged(nameof(UsarMedicaoComprimida));
+                }
+            }
+        }
+
+        private Ponto _ponto = null;
+		public Ponto Ponto
+        {
+            get { return _ponto; }
+            set
+            {
+                _ponto = value;
+                PrecoKWH = value.PrecoKWH;
+                OnPropertyChanged(nameof(Ponto));
+            }
+        }
 
         public SfDataGrid dataGrid { get; set; }
 
@@ -38,12 +67,87 @@ namespace MobileMarket.ViewModel
                 {
                     _medicoes = new ObservableCollection<Medicao> { };
                 }
-                else
+                else if (_medicoes != value)
                 {
                     _medicoes = value;
+                    CalcularMedias();
+                    ComprimirMedicao();
+                    SetMedicaoDisplay();
                 }
                 OnPropertyChanged(nameof(Medicoes));
             }
+        }
+
+        private ObservableCollection<Medicao> _medicoesCompressed = new ObservableCollection<Medicao> { };
+        public ObservableCollection<Medicao> MedicoesCompressed
+        {
+            get { return _medicoesCompressed; }
+            set
+            {
+                if (value == null)
+                {
+                    _medicoesCompressed = new ObservableCollection<Medicao> { };
+                }
+                else if (_medicoesCompressed != value)
+                {
+                    _medicoesCompressed = value;
+                    SetMedicaoDisplay();
+                }
+                OnPropertyChanged(nameof(MedicoesCompressed));
+            }
+        }
+
+        private ObservableCollection<Medicao> _medicoesDisplay = new ObservableCollection<Medicao> { };
+        public ObservableCollection<Medicao> MedicoesDisplay
+        {
+            get { return _medicoesDisplay; }
+            set
+            {
+                if (value == null)
+                {
+                    _medicoesDisplay = new ObservableCollection<Medicao> { };
+                }
+                else if(_medicoesDisplay != value)
+                {
+                    _medicoesDisplay = value;
+                }
+                OnPropertyChanged(nameof(MedicoesDisplay));
+            }
+        }
+
+        private void SetMedicaoDisplay()
+        {
+            if (UsarMedicaoComprimida)
+            {
+                MedicoesDisplay = MedicoesCompressed;
+            }
+            else
+            {
+                MedicoesDisplay = Medicoes;
+            }
+        }
+
+        private void ComprimirMedicao()
+        {
+            ObservableCollection<Medicao> medicoesCompressed = new ObservableCollection<Medicao>();
+            long totalTimespan = (DataFim - DataInicio).Ticks;
+            for (int i = 0; i < _numeroPontos; i++)
+            {
+                long startSpan = totalTimespan * (i) / 100;
+                long endSpan = totalTimespan * (i+1) / 100;
+                DateTime startDate = DataInicio.AddTicks(startSpan);
+                DateTime endDate = DataInicio.AddTicks(endSpan);
+                List<Medicao> medicoesSetDate = Medicoes.Where(medicao => medicao.Horario >= startDate && medicao.Horario < endDate).ToList();
+                double mediaPotenciaTotal = medicoesSetDate.Count > 0 ? medicoesSetDate.Average(medicao => medicao.PotenciaTotal) : 0;
+                double mediaPotenciaReativa = medicoesSetDate.Count > 0 ? medicoesSetDate.Average(medicao => medicao.PotenciaReativa) : 0;
+                double mediaFatorPotencia = medicoesSetDate.Count > 0 ? medicoesSetDate.Average(medicao => medicao.FatorPotencia) : 0;
+                double mediaCorrente = medicoesSetDate.Count > 0 ? medicoesSetDate.Average(medicao => medicao.Corrente) : 0;
+                double mediaTensao = medicoesSetDate.Count > 0 ? medicoesSetDate.Average(medicao => medicao.Tensao) : 0;
+                double mediaFrequencia = medicoesSetDate.Count > 0 ? medicoesSetDate.Average(medicao => medicao.Frequencia) : 0;
+                Medicao newMedicao = new Medicao(i, startDate, mediaPotenciaTotal, mediaPotenciaReativa, mediaFatorPotencia, mediaCorrente, mediaTensao, mediaFrequencia, Ponto.Codigo);
+                medicoesCompressed.Add(newMedicao);
+            }
+            MedicoesCompressed = medicoesCompressed;
         }
 
         private string _medicaoSelecionada = "PotenciaTotal";
@@ -104,6 +208,7 @@ namespace MobileMarket.ViewModel
             set
             {
                 _dataInicio = value;
+                CalcularPrecoFinal();
                 OnPropertyChanged(nameof(DataInicio));
                 if(AutoSetOk)
                     UpdateMedicoes(true);
@@ -133,6 +238,7 @@ namespace MobileMarket.ViewModel
             set
             {
                 _dataFim = value;
+                CalcularPrecoFinal();
                 OnPropertyChanged(nameof(DataFim));
                 if (AutoSetOk)
                     UpdateMedicoes(true);
@@ -192,6 +298,120 @@ namespace MobileMarket.ViewModel
         }
         #endregion
 
+        #region Estatisticas
+        private double _mediaPotenciaTotal = 0;
+        public double MediaPotenciaTotal
+        {
+            get { return _mediaPotenciaTotal; }
+            set
+            {
+                _mediaPotenciaTotal = value;
+                CalcularPrecoFinal();
+                OnPropertyChanged(nameof(MediaPotenciaTotal));
+            }
+        }
+
+        private double _mediaPotenciaReativa = 0;
+        public double MediaPotenciaReativa
+        {
+            get { return _mediaPotenciaReativa; }
+            set
+            {
+                _mediaPotenciaReativa = value;
+                OnPropertyChanged(nameof(MediaPotenciaReativa));
+            }
+        }
+
+        private double _mediaFatorPotencia = 0;
+        public double MediaFatorPotencia
+        {
+            get { return _mediaFatorPotencia; }
+            set
+            {
+                _mediaFatorPotencia = value;
+                OnPropertyChanged(nameof(MediaFatorPotencia));
+            }
+        }
+
+        private double _mediaCorrente = 0;
+        public double MediaCorrente
+        {
+            get { return _mediaCorrente; }
+            set
+            {
+                _mediaCorrente = value;
+                OnPropertyChanged(nameof(MediaCorrente));
+            }
+        }
+
+        private double _mediaTensao = 0;
+        public double MediaTensao
+        {
+            get { return _mediaTensao; }
+            set
+            {
+                _mediaTensao = value;
+                OnPropertyChanged(nameof(MediaTensao));
+            }
+        }
+
+        private double _mediaFrequencia = 0;
+        public double MediaFrequencia
+        {
+            get { return _mediaFrequencia; }
+            set
+            {
+                _mediaFrequencia = value;
+                OnPropertyChanged(nameof(MediaFrequencia));
+            }
+        }
+
+        private double _precoKWH = 0;
+        public double PrecoKWH
+        {
+            get { return _precoKWH; }
+            set
+            {
+                if(_precoKWH != value)
+                {
+                    _precoKWH = value;
+                    CalcularPrecoFinal();
+                    OnPropertyChanged(nameof(PrecoKWH));
+                }
+            }
+        }
+
+        private double _precoFinal = 0;
+        public double PrecoFinal
+        {
+            get { return _precoFinal; }
+            set
+            {
+                _precoFinal = value;
+                OnPropertyChanged(nameof(PrecoFinal));
+            }
+        }
+
+        private void CalcularMedias()
+        {
+            if(Medicoes != null && Medicoes.Count > 0)
+            {
+                MediaPotenciaTotal = Medicoes.Average(medicao => medicao.PotenciaTotal);
+                MediaPotenciaReativa = Medicoes.Average(medicao => medicao.PotenciaReativa);
+                MediaFatorPotencia = Medicoes.Average(medicao => medicao.FatorPotencia);
+                MediaCorrente = Medicoes.Average(medicao => medicao.Corrente);
+                MediaTensao = Medicoes.Average(medicao => medicao.Tensao);
+                MediaFrequencia = Medicoes.Average(medicao => medicao.Frequencia);
+            }
+        }
+
+        private void CalcularPrecoFinal()
+        {
+            double numeroHoras = (DataFim - DataInicio).TotalHours;
+            PrecoFinal = MediaPotenciaTotal/1000 * numeroHoras * PrecoKWH;
+        }
+        #endregion
+
         public ChartPageViewModel()
 		{
             DataInicioCollection = DateTimeToCollection(DateTime.Now.AddDays(-1));
@@ -215,12 +435,12 @@ namespace MobileMarket.ViewModel
         private void UpdateMedicoes(bool resetPosition)
         {
             dataGrid.CanMaintainScrollPosition = !resetPosition;
-            Medicoes = HTTPRequest.GetMedicoes(ponto.Codigo, DataInicio, DataFim);
+            Medicoes = HTTPRequest.GetMedicoes(Ponto.Codigo, DataInicio, DataFim);
         }
 
         public void AutoSet()
         {
-            Medicoes = HTTPRequest.GetMedicoes(ponto.Codigo, null, null);
+            Medicoes = HTTPRequest.GetMedicoes(Ponto.Codigo, null, null);
             if(Medicoes != null && Medicoes.Count > 0)
             {
                 DataInicioCollection = DateTimeToCollection(Medicoes[0].Horario);

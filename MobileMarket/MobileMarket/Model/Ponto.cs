@@ -9,6 +9,7 @@ namespace MobileMarket.Model
         public int Codigo { get; set; }
         public string Nome { get; set; }
         public string Descricao { get; set; }
+        public double PrecoKWH { get; set; }
         public int CodigoUsuario { get; set; }
         public bool IsDescricaoVisible
         { 

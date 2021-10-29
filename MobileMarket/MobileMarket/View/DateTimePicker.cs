@@ -93,7 +93,7 @@ namespace MobileMarket.View
                     if (flag)
                     {
                         ObservableCollection<object> days = new ObservableCollection<object>();
-                        int month = DateTime.ParseExact(Months[(e.NewValue as IList)[1].ToString()], "MMMM", CultureInfo.InvariantCulture).Month;
+                        int month = DateTime.ParseExact(Months[(e.NewValue as IList)[1].ToString()], "MMMM", CultureInfo.CurrentCulture).Month;
                         int year = int.Parse((e.NewValue as IList)[0].ToString());
                         for (int j = 1; j <= DateTime.DaysInMonth(year, month); j++)
                         {
