@@ -19,7 +19,7 @@ namespace MobileMarket.ViewModel
 {
     public interface ISave
     {
-        void Save(string filename, string contentType, MemoryStream stream);
+        string Save(string filename, string contentType, MemoryStream stream);
     }
 
     public class ChartPageViewModel : BaseViewModel
@@ -457,7 +457,7 @@ namespace MobileMarket.ViewModel
             }
         }
 
-        public void ExportarMedicoes()
+        public string ExportarMedicoes()
         {
             DataGridExcelExportingController excelExport = new DataGridExcelExportingController();
             var excelEngine = excelExport.ExportToExcel(this.dataGrid);
@@ -467,7 +467,7 @@ namespace MobileMarket.ViewModel
             workbook.Close();
             excelEngine.Dispose();
 
-            DependencyService.Get<ISave>().Save("Medicoes.xlsx", "application/msexcel", stream);
+            return DependencyService.Get<ISave>().Save("Medicoes.xlsx", "application/msexcel", stream);
         }
     }
 }

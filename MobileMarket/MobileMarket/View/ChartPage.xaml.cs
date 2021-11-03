@@ -117,7 +117,15 @@ namespace MobileMarket.View
 
         private void ExportarDados_Clicked(object sender, EventArgs e)
         {
-            ViewModel.ExportarMedicoes();
+            string result = ViewModel.ExportarMedicoes();
+            if (!string.IsNullOrEmpty(result))
+            {
+                DisplayAlert("Dados exportados", "Os dados foram exportados com sucesso para: " + result, "OK");
+            }
+            else
+            {
+                DisplayAlert("Falha ao exportar dados", "Falha ao exportar os dados.", "OK");
+            }
         }
 
         #region AlarmPage

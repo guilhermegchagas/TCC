@@ -13,6 +13,7 @@ namespace MobileMarket
 
         public App()
         {
+            Syncfusion.Licensing.SyncfusionLicenseProvider.RegisterLicense("NTI5Mjg5QDMxMzkyZTMzMmUzME9zb0ZwdytGUnY5UGRSZTV1SGJ1bXUzZ2tOazZwbTNTbTFQK0NaQkdWQTQ9");
             InitializeComponent();
             CultureInfo BRCulture = new CultureInfo("pt-BR");
             CultureInfo.DefaultThreadCurrentCulture = BRCulture;

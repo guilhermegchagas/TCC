@@ -4,6 +4,7 @@ using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Globalization;
 using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
@@ -300,7 +301,7 @@ namespace MobileMarket.ViewController
                     FormUrlEncodedContent parametros = new FormUrlEncodedContent(new[]
                     {
                         new KeyValuePair<string,string>("codigo",ponto.Codigo.ToString()),
-                        new KeyValuePair<string,string>("precoKWH",ponto.PrecoKWH.ToString()),
+                        new KeyValuePair<string,string>("precoKWH",ponto.PrecoKWH.ToString("F",CultureInfo.CreateSpecificCulture("en-US"))),
                         new KeyValuePair<string,string>("codigoUsuario",ponto.CodigoUsuario.ToString())
                     });
 

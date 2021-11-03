@@ -19,7 +19,7 @@ namespace MobileMarket.Droid
     public class SaveAndroid : ISave
     {
         [Obsolete]
-        public void Save(string filename, string contentType, MemoryStream stream)
+        public string Save(string filename, string contentType, MemoryStream stream)
         {
             string exception = string.Empty;
             string root = null;
@@ -48,13 +48,9 @@ namespace MobileMarket.Droid
             }
             if (file.Exists() && contentType != "application/html")
             {
-                Android.Net.Uri path = Android.Net.Uri.FromFile(file);
-                string extension = Android.Webkit.MimeTypeMap.GetFileExtensionFromUrl(Android.Net.Uri.FromFile(file).ToString());
-                string mimeType = Android.Webkit.MimeTypeMap.Singleton.GetMimeTypeFromExtension(extension);
-                Intent intent = new Intent(Intent.ActionView);
-                intent.SetDataAndType(path, mimeType);
-                Forms.Context.StartActivity(Intent.CreateChooser(intent, "Choose App"));
+                return file.AbsolutePath;
             }
+            return "";
         }
     }
 }
