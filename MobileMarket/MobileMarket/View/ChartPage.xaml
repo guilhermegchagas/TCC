@@ -49,15 +49,15 @@
                      HorizontalOptions="FillAndExpand">
                     <Frame Grid.Column="0" BorderColor="Black" Padding="2">
                         <StackLayout Orientation="Vertical" Spacing="1">
-                            <Label Text="{Binding DataInicio.Date, StringFormat='{0:dd \\de MMMM, yyyy}'}" TextColor="Black"/>
-                            <Label Text="{Binding DataInicio.TimeOfDay, StringFormat='{}{0:hh\\:mm}'}" TextColor="Black"/>
+                            <Label Text="{Binding DataInicio.Date, StringFormat='{0:dd \\de MMMM, yyyy}'}" TextColor="Black" FontSize="12"/>
+                            <Label Text="{Binding DataInicio.TimeOfDay, StringFormat='{}{0:hh\\:mm}'}" TextColor="Black" FontSize="12"/>
                         </StackLayout>
                     </Frame>
                     <ImageButton Grid.Column="1" Source="calendar_icon.png" WidthRequest="30" HeightRequest="30" BackgroundColor="Transparent" Clicked="DataInicio_Clicked"/>
                     <Frame Grid.Column="2" BorderColor="Black" Padding="2">
                         <StackLayout Orientation="Vertical" Spacing="1">
-                            <Label Text="{Binding DataFim.Date, StringFormat='{0:dd \\de MMMM, yyyy}'}" TextColor="Black"/>
-                            <Label Text="{Binding DataFim.TimeOfDay, StringFormat='{}{0:hh\\:mm}'}" TextColor="Black"/>
+                            <Label Text="{Binding DataFim.Date, StringFormat='{0:dd \\de MMMM, yyyy}'}" TextColor="Black" FontSize="12"/>
+                            <Label Text="{Binding DataFim.TimeOfDay, StringFormat='{}{0:hh\\:mm}'}" TextColor="Black" FontSize="12"/>
                         </StackLayout>
                     </Frame>
                     <ImageButton Grid.Column="3" Source="calendar_icon.png" WidthRequest="30" HeightRequest="30" BackgroundColor="Transparent" Clicked="DataFim_Clicked"/>
@@ -159,15 +159,15 @@
                      HorizontalOptions="FillAndExpand">
                     <Frame Grid.Column="0" BorderColor="Black" Padding="2">
                         <StackLayout Orientation="Vertical" Spacing="1">
-                            <Label Text="{Binding DataInicio.Date, StringFormat='{0:dd \\de MMMM, yyyy}'}" TextColor="Black"/>
-                            <Label Text="{Binding DataInicio.TimeOfDay, StringFormat='{}{0:hh\\:mm}'}" TextColor="Black"/>
+                            <Label Text="{Binding DataInicio.Date, StringFormat='{0:dd \\de MMMM, yyyy}'}" TextColor="Black" FontSize="12"/>
+                            <Label Text="{Binding DataInicio.TimeOfDay, StringFormat='{}{0:hh\\:mm}'}" TextColor="Black" FontSize="12"/>
                         </StackLayout>
                     </Frame>
                     <ImageButton Grid.Column="1" Source="calendar_icon.png" WidthRequest="30" HeightRequest="30" BackgroundColor="Transparent" Clicked="DataInicio2_Clicked"/>
                     <Frame Grid.Column="2" BorderColor="Black" Padding="2">
                         <StackLayout Orientation="Vertical" Spacing="1">
-                            <Label Text="{Binding DataFim.Date, StringFormat='{0:dd \\de MMMM, yyyy}'}" TextColor="Black"/>
-                            <Label Text="{Binding DataFim.TimeOfDay, StringFormat='{}{0:hh\\:mm}'}" TextColor="Black"/>
+                            <Label Text="{Binding DataFim.Date, StringFormat='{0:dd \\de MMMM, yyyy}'}" TextColor="Black" FontSize="12"/>
+                            <Label Text="{Binding DataFim.TimeOfDay, StringFormat='{}{0:hh\\:mm}'}" TextColor="Black" FontSize="12"/>
                         </StackLayout>
                     </Frame>
                     <ImageButton Grid.Column="3" Source="calendar_icon.png" WidthRequest="30" HeightRequest="30" BackgroundColor="Transparent" Clicked="DataFim2_Clicked"/>
@@ -196,7 +196,7 @@
                         Padding="5,0,5,0" 
                         Clicked="ExportarDados_Clicked"/>
                 </Grid>
-                <dataGrid:SfDataGrid x:Name="dataGrid" ItemsSource="{Binding Medicoes}" Margin="10" AutoGenerateColumns="False" ColumnSizer="Star" Grid.Row="2">
+                <dataGrid:SfDataGrid x:Name="dataGrid" ItemsSource="{Binding Medicoes}" Margin="10" AutoGenerateColumns="False" ColumnSizer="Auto" Grid.Row="2">
                     <dataGrid:SfDataGrid.Columns x:TypeArguments="syncfusion:Columns">
                         <dataGrid:GridTextColumn HeaderText="Horário"
                                    Padding="2"
@@ -284,15 +284,15 @@
                      HorizontalOptions="FillAndExpand">
                     <Frame Grid.Column="0" BorderColor="Black" Padding="2">
                         <StackLayout Orientation="Vertical" Spacing="1">
-                            <Label Text="{Binding DataInicio.Date, StringFormat='{0:dd \\de MMMM, yyyy}'}" TextColor="Black"/>
-                            <Label Text="{Binding DataInicio.TimeOfDay, StringFormat='{}{0:hh\\:mm}'}" TextColor="Black"/>
+                            <Label Text="{Binding DataInicio.Date, StringFormat='{0:dd \\de MMMM, yyyy}'}" TextColor="Black" FontSize="12"/>
+                            <Label Text="{Binding DataInicio.TimeOfDay, StringFormat='{}{0:hh\\:mm}'}" TextColor="Black" FontSize="12"/>
                         </StackLayout>
                     </Frame>
                     <ImageButton Grid.Column="1" Source="calendar_icon.png" WidthRequest="30" HeightRequest="30" BackgroundColor="Transparent" Clicked="DataInicio3_Clicked"/>
                     <Frame Grid.Column="2" BorderColor="Black" Padding="2">
                         <StackLayout Orientation="Vertical" Spacing="1">
-                            <Label Text="{Binding DataFim.Date, StringFormat='{0:dd \\de MMMM, yyyy}'}" TextColor="Black"/>
-                            <Label Text="{Binding DataFim.TimeOfDay, StringFormat='{}{0:hh\\:mm}'}" TextColor="Black"/>
+                            <Label Text="{Binding DataFim.Date, StringFormat='{0:dd \\de MMMM, yyyy}'}" TextColor="Black" FontSize="12"/>
+                            <Label Text="{Binding DataFim.TimeOfDay, StringFormat='{}{0:hh\\:mm}'}" TextColor="Black" FontSize="12"/>
                         </StackLayout>
                     </Frame>
                     <ImageButton Grid.Column="3" Source="calendar_icon.png" WidthRequest="30" HeightRequest="30" BackgroundColor="Transparent" Clicked="DataFim3_Clicked"/>

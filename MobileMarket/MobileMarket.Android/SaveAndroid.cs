@@ -23,13 +23,7 @@ namespace MobileMarket.Droid
         {
             string exception = string.Empty;
             string root = null;
-            if (Android.OS.Environment.IsExternalStorageEmulated)
-            {
-                root = Android.OS.Environment.ExternalStorageDirectory.ToString();
-            }
-            else
-                root = System.Environment.GetFolderPath(System.Environment.SpecialFolder.MyDocuments);
-
+            root = Android.OS.Environment.GetExternalStoragePublicDirectory(Android.OS.Environment.DirectoryDocuments).AbsolutePath;
             Java.IO.File myDir = new Java.IO.File(root + "/Syncfusion");
             myDir.Mkdir();
             Java.IO.File file = new Java.IO.File(myDir, filename);

@@ -43,6 +43,14 @@ namespace MobileMarket.ViewModel
             }
         }
 
+        public string HeaderPT { get; set; } = "Potência" + Environment.NewLine + "Total(W)";
+        public string HeaderPR { get; set; } = "Potência" + Environment.NewLine + "Reativa" + Environment.NewLine + "(VAR)";
+        public string HeaderFP { get; set; } = "Fator" + Environment.NewLine + "de" + Environment.NewLine + "Potência";
+        public string HeaderCorrente { get; set; } = "Corrente" + Environment.NewLine + "(A)";
+        public string HeaderTensao { get; set; } = "Tensão" + Environment.NewLine + "(V)";
+        public string HeaderFreq { get; set; } = "Frequência" + Environment.NewLine + "(Hz)";
+
+
         private Ponto _ponto = null;
 		public Ponto Ponto
         {
