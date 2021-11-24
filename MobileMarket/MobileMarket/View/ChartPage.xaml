@@ -196,7 +196,7 @@
                         Padding="5,0,5,0" 
                         Clicked="ExportarDados_Clicked"/>
                 </Grid>
-                <dataGrid:SfDataGrid x:Name="dataGrid" ItemsSource="{Binding Medicoes}" Margin="10" AutoGenerateColumns="False" ColumnSizer="Auto" Grid.Row="2">
+                <dataGrid:SfDataGrid x:Name="dataGrid" ItemsSource="{Binding Medicoes}" Margin="10" AutoGenerateColumns="False" ColumnSizer="LastColumnFill" Grid.Row="2">
                     <dataGrid:SfDataGrid.Columns x:TypeArguments="syncfusion:Columns">
                         <dataGrid:GridTextColumn HeaderText="Horário"
                                    Padding="2"
@@ -205,37 +205,37 @@
                                    HeaderCellTextSize="10"
                                    CellTextSize="10"
                                    MappingName="Horario"/>
-                        <dataGrid:GridTextColumn HeaderText="Potência Total (W)"
+                        <dataGrid:GridTextColumn HeaderText="{Binding HeaderPT}"
                                    HeaderFontAttribute="Bold"
                                    HeaderCellTextSize="10"
                                    CellTextSize="10"
                                    Padding="2"
                                    MappingName="PotenciaTotal" />
-                        <dataGrid:GridTextColumn HeaderText="Potência Reativa (VAR)"
+                        <dataGrid:GridTextColumn HeaderText="{Binding HeaderPR}"
                                    HeaderFontAttribute="Bold"
                                    HeaderCellTextSize="10"
                                    CellTextSize="10"       
                                    Padding="2"
                                    MappingName="PotenciaReativa" />
-                        <dataGrid:GridTextColumn HeaderText="Fator de Potência"
+                        <dataGrid:GridTextColumn HeaderText="{Binding HeaderFP}"
                                    HeaderFontAttribute="Bold"
                                    HeaderCellTextSize="10"
                                    CellTextSize="10"
                                    Padding="2"
                                    MappingName="FatorPotencia" />
-                        <dataGrid:GridTextColumn HeaderText="Corrente (A)"
+                        <dataGrid:GridTextColumn HeaderText="{Binding HeaderCorrente}"
                                    HeaderFontAttribute="Bold"
                                    HeaderCellTextSize="10"
                                    CellTextSize="10"
                                    Padding="2"
                                    MappingName="Corrente" />
-                        <dataGrid:GridTextColumn HeaderText="Tensão (V)"
+                        <dataGrid:GridTextColumn HeaderText="{Binding HeaderTensao}"
                                    HeaderFontAttribute="Bold"
                                    HeaderCellTextSize="10"
                                    CellTextSize="10" 
                                    Padding="2"
                                    MappingName="Tensao" />
-                        <dataGrid:GridTextColumn HeaderText="Frequência (Hz)"
+                        <dataGrid:GridTextColumn HeaderText="{Binding HeaderFreq}"
                                    ColumnSizer="SizeToHeader"
                                    HeaderFontAttribute="Bold"
                                    HeaderCellTextSize="10"
