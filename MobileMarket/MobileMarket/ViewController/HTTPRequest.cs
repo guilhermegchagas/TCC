@@ -700,7 +700,9 @@ namespace MobileMarket.ViewController
                 using (HttpClient client = new HttpClient(httpClientHandler))
                 {
                     client.BaseAddress = new Uri(urlBase);
-                    string URL = urlBase + "/api/medicao?cp=" + codigoPonto + "&hi=" + hi + "&hf=" + hf + "&pti&ptf&pri&prf&fpi&fpf&ci&cf&ti&tf&fi&ff";
+                    string his = hi.HasValue ? hi.Value.ToString(CultureInfo.GetCultureInfo("en-US")) : string.Empty;
+                    string hfs = hi.HasValue ? hf.Value.ToString(CultureInfo.GetCultureInfo("en-US")) : string.Empty;
+                    string URL = urlBase + "/api/medicao?cp=" + codigoPonto + "&hi=" + his + "&hf=" + hfs + "&pti&ptf&pri&prf&fpi&fpf&ci&cf&ti&tf&fi&ff";
                     try
                     {
                         client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", ClienteInfo.Token);
